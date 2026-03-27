@@ -1,7 +1,27 @@
 .login {
-    color: #636363 !important;
+    color: #ffffff !important;
+}
+.login:hover {
+    color: #ffffff !important;
+    text-decoration: underline white;
 }
 
-.login:hover {
-    color: #e66700 !important;
+.active {
+    color: #000000 !important;
+    background-color: #F59E0B !important;
+}
+.active:hover {
+    color: #383838 !important;
+    background-color: #f0b551 !important;
+}
+.container{
+    background-color: #2563EB !important;
+    border-radius: 18px;
+}
+.fs-4{
+    color: #ffffff !important;
+}
+.fs-4:hover{
+    color: #ffffff !important;
+    text-decoration: underline white;
 }
