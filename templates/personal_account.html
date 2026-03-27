@@ -16,9 +16,10 @@
         </div>
         <div class="col-md-4">
             <div class="progress" role="progressbar" style="height: 25px;">
-                <div class="progress-bar bg-primary" role="progressbar" style="width: {{ ((user.exp / 1000) * 100) }}%"
+                <div class="progress-bar bg-primary" role="progressbar" style="width: {{ ((user.exp % 1000) / 1000) }}%"
                     aria-valuenow="{{ user.exp }}" aria-valuemin="0" aria-valuemax="1000">
-                    {{ ((user.exp / 1000) * 100) | round }}%
+                    {{ ((user.exp % 1000) / 1000 * 100) | round }}%
+                    {{user.exp % 1000}} / 1000 XP
                 </div>
             </div>
         </div>

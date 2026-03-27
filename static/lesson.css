@@ -1,0 +1,75 @@
+.lesson-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+}
+.lesson-card {
+    background-color: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08) !important;
+    padding: 24px;
+}
+.lesson-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+}
+.lesson-card__step {
+display: flex;
+align-items: center;
+justify-content: center;
+min-height: 48px;
+padding: 10px 12px;
+border-radius: 12px;
+background-color: #eff6ff !important;
+border: 1px solid #bfdbfe !important;
+color: #2563eb !important;
+font-weight: 600;
+text-transform: capitalize;
+}
+.lesson-card__step--active {
+    background-color: #2563eb !important;
+    border-color: #2563eb !important;
+    color: #ffffff !important;
+}
+.lesson-card__step--locked {
+    background-color: #e5e7eb !important;
+    border-color: #e5e7eb !important;
+    color: #9ca3af !important;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+.lesson-card__content h2 {
+    margin: 0 0 16px;
+}
+.lesson-card__content p {
+    margin: 0 0 16px;
+    line-height: 1.6;
+}
+.lesson-practice {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+}
+.lesson-practice__sidebar {
+    padding: 20px;
+    background-color: #f8fafc !important;
+    border-radius: 16px;
+}
+.lesson-practice__terminal {
+    min-height: 320px;
+    padding: 20px;
+    border-radius: 16px;
+    background-color: #1e293b !important;
+    color: #e5e7eb !important;
+}
+@media (max-width: 900px) {
+    .lesson-steps {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .lesson-practice {
+        grid-template-columns: 1fr;
+    }
+}

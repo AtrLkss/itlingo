@@ -29,7 +29,7 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
     level = db.Column(db.Integer, default=1)
-    exp = db.Column(db.Integer, default=500)
+    exp = db.Column(db.Integer, default=0)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 
@@ -51,9 +51,6 @@ class Lesson(db.Model):
     content = db.Column(db.Text, nullable=False)
     order = db.Column(db.Integer)
 
-
-with app.app_context():
-    db.create_all()
 
 
 @login_manager.user_loader
@@ -133,24 +130,149 @@ def personal_account():
 def learn():
     return render_template("learn.html", user=current_user)
     
-@app.route("/one")
+# @app.route("/one")
+# @login_required
+# def one():
+#     return render_template("one.html", user=current_user)
+
+# @app.route("/two")
+# @login_required
+# def two():
+#     return render_template("two.html", user=current_user)
+
+# @app.route("/three")
+# @login_required
+# def three():
+#     return render_template("three.html", user=current_user)
+
+# VKAD
+
+class UserLessonProgress(db.Model):
+    __tablename__ = "user_lesson_progress"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    lesson_slug = db.Column(db.String(100), nullable=False)
+    unlocked_step = db.Column(db.Integer, default=1)
+    completed = db.Column(db.Boolean, default=False)
+    reward_claimed = db.Column(db.Boolean, default=False)
+
+
+LESSONS = {
+    "lesson-1": {
+        "title": "Lesson 1",
+        "description": "Description for Lesson 1",
+        "reward_exp": 1000,
+        "steps": 
+        [
+            {
+                "order": 1,
+                "type": "theory",
+                "title": "Что такое Python?",
+                "content": "Python - это высокоуровневый язык программирования общего назначения, который используется для разработки веб-приложений, анализа данных, искусственного интеллекта и многого другого.",
+                "question": "Python - Это змея или Язык программирования?",
+                "answer": "Да"
+            },
+            {
+                "order": 2,
+                "type": "test",
+                "title": "PROVERKA PO TEORII",
+                "task": "Kakoi yazik mi izuchaem?",
+                "options": ["C++", "Python", "Java"],
+                "correct": "Python"
+            },
+            {
+                "order": 3,
+                "type": "practice",
+                "title": "Практическое задание",
+                "task": "Напиши 'Hello, World!' на Python",
+                "hint": "Используй print()"
+            }
+        ]
+    }
+}
+
+def get_or_create_progress(user_id, lesson_slug):
+    progress = UserLessonProgress.query.filter_by(
+        user_id=user_id, lesson_slug=lesson_slug
+    ).first()
+
+    if progress is None:
+        progress = UserLessonProgress(user_id=user_id, lesson_slug=lesson_slug)
+        db.session.add(progress)
+        db.session.commit()
+
+    return progress
+
+
+def add_exp(user, amount):
+    user.exp += amount
+    user.level = user.exp // 1000 + 1
+
+
+@app.route("/lessons/<lesson_slug>")
 @login_required
-def one():
-    return render_template("one.html", user=current_user)
+def lesson_page(lesson_slug):
+    lesson = LESSONS.get(lesson_slug)
+    if lesson is None:
+        return redirect(url_for("learn"))
+    
+    progress = get_or_create_progress(current_user.id, lesson_slug)
 
-@app.route("/two")
+    step_number = request.args.get("step", progress.unlocked_step, type=int)
+    step_number = min(step_number, progress.unlocked_step)
+
+    current_step = next(
+        (s for s in lesson["steps"] if s["order"] == step_number), 
+        lesson["steps"][0]
+    )
+    return render_template(
+        "lesson.html",
+        lesson=lesson,
+        lesson_slug=lesson_slug,
+        current_step=current_step,
+        progress=progress,
+        user=current_user
+    )
+    
+
+@app.route("/lessons/<lesson_slug>/steps/<int:step_order>/complete", methods=["POST"])
 @login_required
-def two():
-    return render_template("two.html", user=current_user)
+def complete_step(lesson_slug, step_order):
+    lesson = LESSONS.get(lesson_slug)
+    if lesson is None:
+        return redirect(url_for("learn"))
+    
+    progress = get_or_create_progress(current_user.id, lesson_slug)
+    current_step = next((s for s in lesson["steps"] if s["order"] == step_order), None)
+    if current_step is None or step_order > progress.unlocked_step:
+        return redirect(url_for("lesson_page", lesson_slug=lesson_slug))
+    
+    answer = request.form.get("answer", "").strip()
+    is_correct = True
 
-@app.route("/three")
-@login_required
-def three():
-    return render_template("three.html", user=current_user)
+    if current_step["type"] == "theory":
+        is_correct = answer.strip() != ""
+    elif current_step["type"] == "test":
+        is_correct = answer == current_step["correct"]
+    elif current_step["type"] == "practice":
+        is_correct = True
 
+    if is_correct:
+        if step_order < len(lesson["steps"]):
+            progress.unlocked_step = max(progress.unlocked_step, step_order + 1)
+        else:
+            progress.completed = True
+            if not progress.reward_claimed:
+                add_exp(current_user, lesson["reward_exp"])
+                progress.reward_claimed = True
 
+        db.session.commit()
 
+    return redirect(url_for("lesson_page", lesson_slug=lesson_slug, step=progress.unlocked_step,))
 
+with app.app_context():
+    db.create_all()
 
 if __name__ == "__main__":
     app.run(debug=True)
