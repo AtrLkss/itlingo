@@ -25,3 +25,7 @@
     color: #ffffff !important;
     text-decoration: underline white;
 }
+.logo{
+    display: block;
+    margin: 0 auto 40 40;   
+}   
