@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="stylesheet" href="{{url_for('static', filename='dashboard.css')}}">
     <title>{% block title %}Курс первый{% endblock %}</title>
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -16,17 +19,17 @@
                 class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"> <svg
                     class="bi me-2" width="0" height="0" aria-hidden="true">
                     <use xlink:href="#bootstrap"></use>
-                </svg> <span class="fs-4">IT-Lingo</span> </a>
+                </svg> <span class="fs-4 font">IT-Lingo</span> </a>
             <ul class="nav nav-pills">
-                <li class="nav-item"><a href="/personal_account" class="nav-link active">Личный кабинет</a></li>
-                <li class="nav-item"><a href="/logout" class="nav-link login" aria-current="page">Выйти</a></li>
+                <li class="nav-item"><a href="/personal_account" class="nav-link active font">Личный кабинет</a></li>
+                <li class="nav-item"><a href="/logout" class="nav-link login" aria-current="page font">Выйти</a></li>
             </ul>
         </header>
     </div>
 
     {% block body %}
     <main class="dashboard">
-        <h1 class="dashboard__title">Вступление</h1>
+        <h1 class="dashboard__title font">Вступление</h1>
     </main>
 
     {% endblock %}

@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="stylesheet" href="{{url_for('static', filename='dashboard.css')}}">
     <title>{% block title %}Меню выбора{% endblock %}</title>
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -16,46 +19,46 @@
                 class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"> <svg
                     class="bi me-2" width="0" height="0" aria-hidden="true">
                     <use xlink:href="#bootstrap"></use>
-                </svg> <span class="fs-4">IT-Lingo</span> </a>
+                </svg> <span class="fs-4 font">IT-Lingo</span> </a>
             <ul class="nav nav-pills">
-                <li class="nav-item"><a href="/personal_account" class="nav-link active">Личный кабинет</a></li>
-                <li class="nav-item"><a href="/logout" class="nav-link login" aria-current="page">Выйти</a></li>
+                <li class="nav-item"><a href="/personal_account" class="nav-link active font">Личный кабинет</a></li>
+                <li class="nav-item"><a href="/logout" class="nav-link login font" aria-current="page">Выйти</a></li>
             </ul>
         </header>
     </div>
 
     {% block body %}
     <main class="dashboard">
-        <h1 class="dashboard__title">Добро пожаловать в IT-Lingo!</h1>
+        <h1 class="dashboard__title font">Добро пожаловать в IT-Lingo!</h1>
 
         <div class="dashboard__courses">
             <article class="dashboard__course">
                 <img src="{{ url_for('static', filename='C_Sharp_Logo_2023.svg') }}" alt="course1"
                     class="dashboard__course-image">
-                <h2 class="dashboard__course-title">🟣 Курс по C#</h2>
-                <p class="dashboard__course-description">Освой язык программирования C# и научись создавать современные
+                <h2 class="dashboard__course-title font">🟣 Курс по C#</h2>
+                <p class="dashboard__course-description font">Освой язык программирования C# и научись создавать современные
                     приложения — от десктопных программ до игр и веб-сервисов. На курсе ты изучишь основы синтаксиса,
                     объектно-ориентированное программирование и работу с платформой .NET. Подходит для начинающих и тех,
                     кто хочет углубить знания.</p>
-                <span class="dashboard__course-link dashboard__course-link--disabled">В разработке...</span>
+                <span class="dashboard__course-link dashboard__course-link--disabled font">В разработке...</span>
             </article>
             <article class="dashboard__course">
                 <img src="{{ url_for('static', filename='Python-logo-notext.svg') }}" alt="course2"
                     class="dashboard__course-image">
-                <h2 class="dashboard__course-title">🟡 Курс по Python</h2>
-                <p class="dashboard__course-description">Научись программировать на Python — одном из самых популярных и
+                <h2 class="dashboard__course-title font">🟡 Курс по Python</h2>
+                <p class="dashboard__course-description font">Научись программировать на Python — одном из самых популярных и
                     универсальных языков. Ты разберёшься с базовыми конструкциями, автоматизацией, обработкой данных и
                     созданием собственных проектов. Отличный старт для карьеры в IT, аналитике или разработке.</p>
-                <a href="/learn" class="dashboard__course-link">Подробнее</a>
+                <a href="/learn" class="dashboard__course-link font">Подробнее</a>
             </article>
             <article class="dashboard__course">
                 <img src="{{ url_for('static', filename='HTML5_logo_and_wordmark.svg') }}" alt="course3"
                     class="dashboard__course-image">
-                <h2 class="dashboard__course-title">🔴 Курс по HTML5</h2>
-                <p class="dashboard__course-description">Изучи HTML5 и сделай первый шаг в веб-разработке. Ты научишься
+                <h2 class="dashboard__course-title font">🔴 Курс по HTML5</h2>
+                <p class="dashboard__course-description font">Изучи HTML5 и сделай первый шаг в веб-разработке. Ты научишься
                     создавать структуру сайтов, работать с тегами, формами и мультимедиа. Курс идеально подойдёт тем,
                     кто хочет создавать современные и адаптивные веб-страницы с нуля.</p>
-                <span class="dashboard__course-link dashboard__course-link--disabled">В разработке...</span>
+                <span class="dashboard__course-link dashboard__course-link--disabled font">В разработке...</span>
             </article>
 
         </div>
