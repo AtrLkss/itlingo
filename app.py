@@ -29,7 +29,7 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
     level = db.Column(db.Integer, default=1)
-    exp = db.Column(db.Integer, default=0)
+    exp = db.Column(db.Integer, default=500)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 
