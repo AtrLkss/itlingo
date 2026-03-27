@@ -14,14 +14,24 @@
                 class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"> <svg
                     class="bi me-2" width="40" height="32" aria-hidden="true">
                     <use xlink:href="#bootstrap"></use>
-                </svg> <span class="fs-4">StudyGame</span> </a>
+                </svg> <span class="fs-4">IT-Lingo</span> </a>
             <ul class="nav nav-pills">
                 <li class="nav-item"><a href="#" class="nav-link active">Личный кабинет</a></li>
                 <li class="nav-item"><a href="/logout" class="nav-link" aria-current="page">Выйти</a></li>
             </ul>
         </header>
     </div>
+    <main class="dashboard">
+        <h1 class="dashboard__title">Добро пожаловать в IT-Lingo!</h1>
 
+        <div class="dashboard__courses">
+            <article class="dashboard__course">
+                <h2 class="dashboard__course-title">Курс 1</h2>
+                <p class="dashboard__course-description">Описание курса 1</p>
+                <a href="#" class="dashboard__course-link">Подробнее</a>
+            </article>
+        </div>
+    </main>
     {% block body %} {% endblock %}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
