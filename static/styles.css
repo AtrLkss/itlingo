@@ -1,3 +1,4 @@
+
 .login {
     color: #ffffff !important;
 }
@@ -147,4 +148,8 @@
     background-color: #f0b551 !important;
     border-radius: 8px;
     text-decoration: none !important;
+}
+.font{
+    font-family: 'Nunito', sans-serif;
+    font-weight: bold;
 }
