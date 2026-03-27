@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{url_for('static', filename='dashboard.css')}}">
+    <title>{% block title %}Обучалки{% endblock %}</title>
+</head>
+
+<body>
+    <div class="container mt-10">
+        <header class="d-flex flex-wrap justify-content-center py-3 mb-4"> <a href="/"
+                class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"> <svg
+                    class="bi me-2" width="0" height="0" aria-hidden="true">
+                    <use xlink:href="#bootstrap"></use>
+                </svg> <span class="fs-4">IT-Lingo</span> </a>
+            <ul class="nav nav-pills">
+                <li class="nav-item"><a href="/personal_account" class="nav-link active">Личный кабинет</a></li>
+                <li class="nav-item"><a href="/logout" class="nav-link login" aria-current="page">Выйти</a></li>
+            </ul>
+        </header>
+    </div>
+
+    {% block body %}
+    <main class="dashboard">
+        <h1 class="dashboard__title">Список курсов</h1>
+
+        <div class="dashboard__courses">
+            <article class="dashboard__course">
+                <img src="{{ url_for('static', filename='1.png') }}" alt="course1"
+                    class="dashboard__course-image">
+                <h2 class="dashboard__course-title">Вступление</h2>
+                <p class="dashboard__course-description">В этом разделе ты познакомишься с языком Python — одним из самых популярных и простых языков программирования в мире.
+                    Узнаешь, кто его создал и почему у него такое необычное название. А главное — ты сразу начнёшь практиковаться.
+                </p>
+                <a href="ССЫЛКА НА КУРС" class="dashboard__course-link">Перейти к курсу</a>
+            </article>
+            <article class="dashboard__course">
+                <img src="{{ url_for('static', filename='2.png') }}" alt="course2"
+                    class="dashboard__course-image">
+                <h2 class="dashboard__course-title">Переменные и операторы</h2>
+                <p class="dashboard__course-description">В этом разделе ты научишься хранить информацию в переменных — как в коробках с наклейками, где можно положить имя, возраст, количество монет или что угодно.
+                    Узнаешь, как заставить компьютер считать: складывать, вычитать, умножать, делить и даже возводить в степень. Познакомишься с операторами — специальными знаками, которые помогают работать с числами.
+                    Ты сможешь менять значения переменных и проверять, чётное число или нет.
+</p>
+                <a href="ССЫЛКА НА КУРС" class="dashboard__course-link">Перейти к курсу</a>
+            </article>
+            <article class="dashboard__course">
+                <img src="{{ url_for('static', filename='3.png') }}" alt="course3"
+                    class="dashboard__course-image">
+                <h2 class="dashboard__course-title">Условия и циклы</h2>
+                <p class="dashboard__course-description">В этом разделе ты научишься заставлять программу принимать решения. С помощью условий программа сможет отвечать по-разному: «если пароль верный — пускаем, если нет — не пускаем».
+Ты узнаешь, как заставить компьютер повторять одно и то же действие много раз, не переписывая код. Циклы помогут тебе выводить числа от 1 до 100 одной строчкой, а не сотней команд.</p>
+                <a href="ССЫЛКА НА КУРС" class="dashboard__course-link">Перейти к курсу</a>
+            </article>
+
+        </div>
+
+    </main>
+
+    {% endblock %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
