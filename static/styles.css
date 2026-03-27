@@ -14,7 +14,7 @@
     color: #383838 !important;
     background-color: #f0b551 !important;
 }
-.container{
+.container.mt-10{
     background-color: #2563EB !important;
     border-radius: 18px;
 }
