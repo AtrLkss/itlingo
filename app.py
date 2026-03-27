@@ -123,5 +123,11 @@ def logout():
     return redirect(url_for("index"))
 
 
+@app.route("/personal_account")
+@login_required
+def personal_account():
+    return render_template("personal_account.html", user=current_user)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
