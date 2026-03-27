@@ -132,6 +132,23 @@ def personal_account():
 @login_required
 def learn():
     return render_template("learn.html", user=current_user)
+    
+@app.route("/one")
+@login_required
+def one():
+    return render_template("one.html", user=current_user)
+
+@app.route("/two")
+@login_required
+def two():
+    return render_template("two.html", user=current_user)
+
+@app.route("/three")
+@login_required
+def three():
+    return render_template("three.html", user=current_user)
+
+
 
 
 
