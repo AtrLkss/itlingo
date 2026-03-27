@@ -5,5 +5,14 @@
 {% endblock %}
 
 {% block body %}
+<main class="hero">
+    <div class="hero__container">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="IT-Lingo" class="hero__img">
 
+        <h1 class="hero__title">IT-Lingo</h1>
+        <p class="hero__description">Платформа для изучения IT, понятная даже ребёнку</p>
+        <a href="/register" class="btn btn-warning hero__button">Начать изучение</a>
+    
+    </div>
+</main>
 {% endblock %}
