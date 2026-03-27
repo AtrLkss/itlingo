@@ -1,4 +1,4 @@
-/* .login {
+.login {
     color: #ffffff !important;
 }
 .login:hover {
@@ -19,34 +19,12 @@
     border-radius: 18px;
 }
 .fs-4{
-    color: #ffffff !important;
+    color: #FFFFFF !important;
 }
 .fs-4:hover{
-    color: #ffffff !important;
-    text-decoration: underline white;
+    color: #FFFFFF !important;
+    text-decoration: underline white   ;
 }
-.content{
-    margin-top: 100px;
-}
-.logo{
-    padding-block: 70px;
-    margin-left: 500px;
-    margin-right: 400px;
-}
-.buttons_logo{
-    padding-block: 70px;
-}
-.btn.btn-primary.btn-lg{
-    background-color: #F59E0B !important;
-    border-color: #F59E0B;
-    color: #000000 !important;
-}
-.btn.btn-primary.btn-lg:hover{
-
-    border-color: #f0b551 !important;
-    color: #383838 !important;
-    background-color: #f0b551 !important;
-} */
  .site-header {
     padding: 20px 0;
  }
