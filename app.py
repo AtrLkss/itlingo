@@ -13,6 +13,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import docker
 import os
+import random
 import subprocess
 import shutil
 from functools import wraps
@@ -157,7 +158,7 @@ class UserLessonProgress(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     lesson_slug = db.Column(db.String(100), nullable=False)
-    unlocked_step = db.Column(db.Integer, default=2)
+    unlocked_step = db.Column(db.Integer, default=1)
     test_passed = db.Column(db.Boolean, default=False)
     completed = db.Column(db.Boolean, default=False)
     reward_claimed = db.Column(db.Boolean, default=False)
@@ -247,8 +248,8 @@ LESSONS = {
                 "type": "test",
                 "title": "В разработке",
                 "task": "...",
-                "options": "...",
-                "correct": "....",
+                "options": ["В разработке"],
+                "correct": "В разработке",
             },
             {
                 "order": 3,
@@ -328,12 +329,9 @@ def get_or_create_progress(user_id, lesson_slug):
         progress = UserLessonProgress(
             user_id=user_id,
             lesson_slug=lesson_slug,
-            unlocked_step=2,
+            unlocked_step=1,
         )
         db.session.add(progress)
-        db.session.commit()
-    elif progress.unlocked_step < 2:
-        progress.unlocked_step = 2
         db.session.commit()
 
     return progress
@@ -381,6 +379,15 @@ def add_exp(user, amount):
     user.level = user.exp // 1000 + 1
 
 
+error_list = [
+    "Traceback",
+    "SyntaxError",
+    "IndentationError",
+    "NameError",
+    "TypeError",
+]
+
+
 @app.route("/lessons/<lesson_slug>")
 @login_required
 def lesson_page(lesson_slug):
@@ -395,7 +402,7 @@ def lesson_page(lesson_slug):
         progress.unlocked_step = 2
         db.session.commit()
 
-    step_number = request.args.get("step", 1, type=int)
+    step_number = request.args.get("step", progress.unlocked_step, type=int)
     step_number = min(step_number, progress.unlocked_step)
 
     current_step = next(
@@ -485,7 +492,8 @@ with app.app_context():
 def require_api_key(view_function):
     @wraps(view_function)
     def decorated_function(*args, **kwargs):
-        if request.json.get("key") != "snILjFUkk_A":
+        data = request.get_json(silent=True) or {}
+        if data.get("key") != "snILjFUkk_A":
             return jsonify({"error": "Invalid API key"}), 401
         return view_function(*args, **kwargs)
 
@@ -541,6 +549,7 @@ def run_script(image, timeout, code, stdins=""):
     return {"stdout": "".join(answer_list), "error": error}
 
 
+@app.route("/python-ide", methods=["POST"])
 @require_api_key
 def python_ide():
     try:

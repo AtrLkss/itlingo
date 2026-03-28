@@ -1,12 +1,15 @@
 {% extends "dashboard.html" %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='lesson.css') }}">
+{% endblock %}
+
 {% block title %}{{ lesson.title }}{% endblock %}
 
 {% block body %}
-<div class='container'>
-<main class="lesson-page">
-    <section class="lesson-card">
-        <div class="row">
+<div class="container">
+    <main class="lesson-page">
+        <section class="lesson-card">
         <div class="lesson-steps">
             {% for step in lesson.steps %}
                 {% set is_locked = step.order > progress.unlocked_step %}
@@ -22,23 +25,19 @@
                         Практика
                         {% endif %}
                     </a>
-                    {% endfor %}
-                </div>
+            {% endfor %}
+        </div>
 
-                <div class="lesson-card__content">
-                    {% if current_step.type == "theory" %}
+        <div class="lesson-card__content">
+            {% if current_step.type == "theory" %}
                     <h2 class="font">{{ current_step.title }}</h2>
                     <div class="col-9">
                         <div class="col-4">
                             <div id="list-example" class="list-group">
-                                <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-1">{{
-                                    current_step["turtle-1"] }}</a>
-                                <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-2">{{
-                                    current_step["turtle-2"] }}</a>
-                                <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-3">{{
-                                    current_step["turtle-3"] }}</a>
-                                <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-4">{{
-                                    current_step["turtle-4"] }}</a>
+                                <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-1">{{ current_step["turtle-1"] }}</a>
+                                <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-2">{{ current_step["turtle-2"] }}</a>
+                                <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-3">{{ current_step["turtle-3"] }}</a>
+                                <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-4">{{ current_step["turtle-4"] }}</a>
                             </div>
                         </div>
                         <div class="col-8">
@@ -88,7 +87,7 @@
 
                             <textarea id="code" placeholder="Напиши здесь свой код..."></textarea>
                             <br>
-                            <button onclick="runCode()">Run Code</button>
+                            <button type="button" onclick="runCode()">Run Code</button>
                             <h3>Output:</h3>
                             <pre id="output"></pre>
 
@@ -122,10 +121,10 @@
                             </form>
                         </aside>
                     </div>
-                    {% endif %}
-                </div>
+            {% endif %}
+        </div>
         </section>
-</main>
+    </main>
 </div>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
