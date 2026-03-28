@@ -106,8 +106,6 @@
                         <h2>{{ current_step.title }}</h2>
                         <p>{{ current_step.task }}</p>
 
-                        <button type="button" onclick="runCode()">Run Code</button>
-
                         <details>
                             <summary>Подсказка</summary>
                             <p>{{ current_step.hint }}</p>
@@ -116,13 +114,11 @@
                         <form method="post"
                             action="{{ url_for('complete_step', lesson_slug=lesson_slug, step_order=current_step.order) }}"
                             class="lesson-card__action">
-                            <button type="submit" class="lesson-card__action-button">
+                            <button type="submit" class="lesson-card__action-button" id="end_lesson">
                                 {% if current_step.order < lesson.steps|length %} Перейти к следующему этапу {% else %}
                                     Завершить урок {% endif %} </button>
                         </form>
                     </aside>
-                    <h3>Output:</h3> <br>
-                    <pre id="output"></pre>
                 </div>
                 {% endif %}
 
@@ -191,6 +187,13 @@
 </script>
 
 <script>
+    const expectedOutput = "{{ expected_output }}";
+    const lessonSlug = "{{ lesson_slug }}";
+    const stepOrder = {{ current_step.order }};
+    const validationResult = document.getElementById("validation-result");
+    const errorMessageDiv = document.getElementById("error-message");
+    const nextButton = document.getElementById("next-step-button");
+
     async function runCode() {
         const code = document.getElementById("code").value;
         const response = await fetch("/python-ide", {
@@ -201,12 +204,36 @@
                 image: "python:3.9",
                 timeout: "5",
                 code: code,
-                stdin: [""]
+                stdin: [""],
+                expected_output: expectedOutput,
+                lesson_slug: lessonSlug,
+                step_order: stepOrder
             })
         });
         const result = await response.json();
-        document.getElementById("output").textContent =
-            result[0].stdout + (result[0].error !== "None" ? result[0].error : "");
+        const Result = result[0];
+
+        if (executionResult.error !== "None") {
+            errorMessageDiv.textContent = "❌ " + executionResult.error;
+            nextButton.disabled = true;
+        }
+        else if (executionResult.success === true) {
+            errorMessageDiv.textContent = "✅ Правильно! Можно переходить к следующему этапу";
+            nextButton.disabled = false;
+        }
+        else if (expectedOutput) {
+            errorMessageDiv.textContent = "❌ Неверный вывод. Попробуй еще раз!";
+            nextButton.disabled = true;
+        }
+        else {
+            errorMessageDiv.textContent = "ℹ️ Выполнено. Нажмите 'Проверить', чтобы продолжить";
+            nextButton.disabled = false;
+        }
+    }
+
+    function prepareSubmission() {
+        const code = document.getElementById("code").value;
+        document.getElementById("submission-code").value = code;
     }
 </script>
 
