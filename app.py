@@ -375,18 +375,18 @@ LESSONS = {
 ACHIEVEMENTS = {
     "lesson-1-test": {
         "title": "Первые шаги",
-        "description": "Вы успешно прошли тест 1 урока и получили это достижение!",
-        "icon": "images/first_steps.jpg",
+        "description": "Вы успешно прошли тесты 1 урока и получили это достижение!",
+        "icon": "images/1A.png",
     },
     "lesson-2-test": {
         "title": "Переменные освоены",
         "description": "Вы успешно прошли тест 2 урока и получили это достижение!",
-        "icon": "images/python_begginer.jpg",
+        "icon": "images/2A.png",
     },
     "lesson-3-test": {
         "title": "Циклы покорены",
         "description": "Вы успешно прошли тест 3 урока и получили это достижение!",
-        "icon": "images/csharp_expert.jpg",
+        "icon": "images/3A.png",
     },
 }
 
