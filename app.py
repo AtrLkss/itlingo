@@ -1,4 +1,4 @@
-﻿from flask import Flask, render_template, request, url_for, redirect
+﻿from flask import Flask, render_template, request, url_for, redirect, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 from flask_login import (
@@ -11,6 +11,11 @@ from flask_login import (
 )
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+import docker
+import os
+import subprocess
+import shutil
+from functools import wraps
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "your_secret_key"
@@ -159,16 +164,16 @@ LESSONS = {
                 "turtle-3": "Первая программа",
                 "turtle-4": "",
                 "content-1": """"Представьте себе язык, на котором вы можете разговаривать с компьютером так же естественно, как с другом. Язык, который понимает ваши мысли и помогает воплощать идеи в жизнь без лишних преград. Это — Python.
-                
+
                 Python — это язык программирования, который появился в 1991 году благодаря голландскому разработчику Гвидо ван Россуму. Название было вдохновлено не змеей, как многие думают, а британским комедийным шоу «Летающий цирк Монти Пайтона». Создатель хотел, чтобы язык был таким же веселым, простым и доступным.
-                
+
                 Сегодня Python — один из самых популярных языков программирования в мире. Его любят за простоту, читаемость и мощь. На Python пишут всё: от простых скриптов до сложных систем искусственного интеллекта, веб-сайтов и научных исследований.""",
                 "content-2": """Почему Python идеален для начинающих? Представьте, что вы учитесь кататься на велосипеде. Можно начать со сложного гоночного велосипеда с десятком передач, а можно с простого, устойчивого и надежного. Python — это тот самый надежный велосипед.
 
                 Вот что делает Python особенным. Во-первых, читаемость. Код на Python похож на английский язык. Вместо запутанных скобок и сложных конструкций — понятные слова и логичные структуры. Во-вторых, простота. Чтобы написать первую программу, достаточно одной строчки. Вам не нужно изучать сотни правил перед тем, как увидеть результат. В-третьих, сообщество. Миллионы разработчиков по всему миру используют Python. Любой ваш вопрос уже задавали до вас, и ответ на него легко найти. И наконец, универсальность. Выучив Python, вы сможете работать в разных направлениях: веб-разработка, анализ данных, искусственный интеллект, автоматизация, создание игр и многое другое.
                 """,
                 "content-3": """В программировании есть традиция: первая программа на новом языке должна выводить фразу «Hello, World!». Это как первый шаг в большом путешествии.
-                
+
                 Python позволяет сделать это одной строчкой:
 
                 print("Hello, World!")
@@ -365,7 +370,9 @@ def complete_step(lesson_slug, step_order):
         progress.unlocked_step = min(progress.unlocked_step, step_order)
         db.session.commit()
         return redirect(
-            url_for("lesson_page", lesson_slug=lesson_slug, step=step_order, incorrect=1)
+            url_for(
+                "lesson_page", lesson_slug=lesson_slug, step=step_order, incorrect=1
+            )
         )
 
     if is_correct:
@@ -393,5 +400,91 @@ with app.app_context():
     db.create_all()
     ensure_progress_columns()
 
+
+def require_api_key(view_function):
+    @wraps(view_function)
+    def decorated_function(*args, **kwargs):
+        if request.json.get("key") != "snILjFUkk_A":
+            return jsonify({"error": "Invalid API key"}), 401
+        return view_function(*args, **kwargs)
+
+    return decorated_function
+
+
+def run_script(image, timeout, code, stdins=""):
+    random_user_dir = f"{random.randint(1000, 2000)}"
+    user_dir_url = os.path.join(
+        os.path.dirname(__file__), "users_task_scripts", random_user_dir
+    )
+    os.makedirs(user_dir_url, exist_ok=True)
+
+    file_url = os.path.join(user_dir_url, "task.py")
+    input_data = "\\n".join(stdins)
+    template_code = f'from io import StringIO;import sys;data = "{input_data}";sys.stdin = StringIO(data)\n'
+
+    with open(file_url, "w") as file:
+        file.write(template_code)
+        file.write(code)
+
+    try:
+        client = docker.from_env()
+        container = client.containers.run(
+            image,
+            f"timeout {timeout} python task.py",
+            network_disabled=True,
+            detach=True,
+            remove=False,
+            working_dir="/task",
+            volumes={user_dir_url: {"bind": "/task", "mode": "rw"}},
+        )
+
+        answer = container.logs(stream=True)
+        container.wait(timeout=int(timeout))
+        subprocess.Popen(f"docker rm -f {container.id}", shell=True)
+
+        answer_list = [str(line, "utf-8") for line in answer]
+
+    except Exception as e:
+        answer_list = [f"Server error: {str(e)}"]
+
+    finally:
+        # Clean up
+        shutil.rmtree(user_dir_url)
+
+    error = "None"
+    for error_check in error_list:
+        if any(error_check in ans for ans in answer_list):
+            error = error_check
+            break
+
+    return {"stdout": "".join(answer_list), "error": error}
+
+
+@require_api_key
+def python_ide():
+    try:
+        data = request.json
+        stdin_list = data.get("stdin", [])
+        answer_list = []
+
+        for stdins in stdin_list:
+            answer = run_script(
+                image=data["image"],
+                timeout=data["timeout"],
+                code=data["code"],
+                stdins=stdins,
+            )
+            answer_list.append(answer)
+
+        return jsonify(answer_list)
+
+    except Exception as e:
+        return jsonify({"error": f"Server error: {str(e)}"}), 500
+
+
 if __name__ == "__main__":
+    os.makedirs(
+        os.path.join(os.path.dirname(__file__), "users_task_scripts"), exist_ok=True
+    )
+
     app.run(debug=True)
