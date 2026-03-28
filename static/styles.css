@@ -154,15 +154,18 @@
     font-weight: bold;
 }
 .col-4{
-  height: 100%;
-  overflow-y: auto;
-  position: sticky;
-  top: 0;
+  height: auto;
+  overflow-y: visible;
+  position: relative;
+  top: auto;
   padding-block: 0;
   width: 320px;
   min-width: 320px;
   margin-left: 0;
   flex: 0 0 320px;
+  align-self: center;
+  display: flex;
+  align-items: center;
 }
 .col-8{
     margin-left: 0;
@@ -171,12 +174,16 @@
     padding-right: 0;
     flex: 1 1 auto;
     min-width: 0;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0 20px 0 0;
 }
 .col-9{
     border: 6px solid #2563EB;
     height: 400px;
     width: 100%;
-    overflow-y: auto;   
+    overflow: hidden;
     position: relative;
     display: flex;
     align-items: flex-start;
@@ -222,12 +229,16 @@
       flex: none;
       height: auto;
       padding-block: 0;
+      align-self: auto;
+      display: block;
     }
     .col-8{
         margin-left: 0;
         width: 100%;
         padding-right: 0;
         flex: none;
+        height: auto;
+        overflow: visible;
     }
     .col-9{
         height: auto;
