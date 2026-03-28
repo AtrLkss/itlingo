@@ -129,9 +129,11 @@ def logout():
 @app.route("/personal_account")
 @login_required
 def personal_account():
-    achievement_rows = UserAchievement.query.filter_by(
-        user_id=current_user.id
-    ).order_by(UserAchievement.created_at.desc()).all()
+    achievement_rows = (
+        UserAchievement.query.filter_by(user_id=current_user.id)
+        .order_by(UserAchievement.created_at.desc())
+        .all()
+    )
 
     user_achievements = []
     for row in achievement_rows:
@@ -163,6 +165,7 @@ class UserLessonProgress(db.Model):
     completed = db.Column(db.Boolean, default=False)
     reward_claimed = db.Column(db.Boolean, default=False)
 
+
 class UserAchievement(db.Model):
     __tablename__ = "user_achievements"
 
@@ -170,6 +173,7 @@ class UserAchievement(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     achievement_slug = db.Column(db.String(100), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
 
 LESSONS = {
     "lesson-1": {
@@ -199,8 +203,14 @@ LESSONS = {
                         "id": "q1",
                         "prompt": "Что такое Python?",
                         "options": [
-                            {"value": "programming_language", "label": "Язык программирования"},
-                            {"value": "graphic_editor", "label": "Графический редактор"},
+                            {
+                                "value": "programming_language",
+                                "label": "Язык программирования",
+                            },
+                            {
+                                "value": "graphic_editor",
+                                "label": "Графический редактор",
+                            },
                             {"value": "search_engine", "label": "Поисковая система"},
                         ],
                         "correct": "programming_language",
@@ -219,9 +229,15 @@ LESSONS = {
                         "id": "q3",
                         "prompt": "Почему Python подходит новичкам?",
                         "options": [
-                            {"value": "clear_syntax", "label": "У него понятный синтаксис"},
+                            {
+                                "value": "clear_syntax",
+                                "label": "У него понятный синтаксис",
+                            },
                             {"value": "no_variables", "label": "В нем нет переменных"},
-                            {"value": "only_games", "label": "Он работает только в играх"},
+                            {
+                                "value": "only_games",
+                                "label": "Он работает только в играх",
+                            },
                         ],
                         "correct": "clear_syntax",
                     },
@@ -233,7 +249,7 @@ LESSONS = {
                 "type": "practice",
                 "title": "Практическое задание",
                 "task": "Напиши программу, которая выводит на экран строку Hello, World! с помощью функции print().",
-                "hint": "Используй print(\"Hello, World!\")",
+                "hint": 'Используй print("Hello, World!")',
                 "exp_reward": 250,
             },
         ],
@@ -267,7 +283,10 @@ LESSONS = {
                         "options": [
                             {"value": "store_value", "label": "Чтобы хранить значение"},
                             {"value": "delete_code", "label": "Чтобы удалить код"},
-                            {"value": "close_program", "label": "Чтобы закрыть программу"},
+                            {
+                                "value": "close_program",
+                                "label": "Чтобы закрыть программу",
+                            },
                         ],
                         "correct": "store_value",
                     },
@@ -341,8 +360,14 @@ LESSONS = {
                         "id": "q2",
                         "prompt": "Что делает цикл?",
                         "options": [
-                            {"value": "repeat_actions", "label": "Повторяет действие несколько раз"},
-                            {"value": "delete_variables", "label": "Удаляет переменные"},
+                            {
+                                "value": "repeat_actions",
+                                "label": "Повторяет действие несколько раз",
+                            },
+                            {
+                                "value": "delete_variables",
+                                "label": "Удаляет переменные",
+                            },
                             {"value": "open_browser", "label": "Открывает браузер"},
                         ],
                         "correct": "repeat_actions",
@@ -375,18 +400,18 @@ LESSONS = {
 ACHIEVEMENTS = {
     "lesson-1-test": {
         "title": "Первые шаги",
-        "description": "Вы успешно прошли тесты 1 урока и получили это достижение!",
-        "icon": "images/1A.png",
+        "description": "Вы успешно прошли тест 1 урока и получили это достижение!",
+        "icon": "images/first_steps.jpg",
     },
     "lesson-2-test": {
         "title": "Переменные освоены",
         "description": "Вы успешно прошли тест 2 урока и получили это достижение!",
-        "icon": "images/2A.png",
+        "icon": "images/python_begginer.jpg",
     },
     "lesson-3-test": {
         "title": "Циклы покорены",
         "description": "Вы успешно прошли тест 3 урока и получили это достижение!",
-        "icon": "images/3A.png",
+        "icon": "images/csharp_expert.jpg",
     },
 }
 
@@ -452,11 +477,77 @@ def add_exp(user, amount):
 
 
 error_list = [
-    "Traceback",
-    "SyntaxError",
+    "ArithmeticError",
+    "AssertionError",
+    "AttributeError",
+    "BaseException",
+    "BlockingIOError",
+    "BrokenPipeError",
+    "BufferError",
+    "BytesWarning",
+    "ChildProcessError",
+    "ConnectionAbortedError",
+    "ConnectionError",
+    "ConnectionRefusedError",
+    "ConnectionResetError",
+    "DeprecationWarning",
+    "EOFError",
+    "Ellipsis",
+    "EnvironmentError",
+    "Exception",
+    "False",
+    "FileExistsError",
+    "FileNotFoundError",
+    "FloatingPointError",
+    "FutureWarning",
+    "GeneratorExit",
+    "IOError",
+    "ImportError",
+    "ImportWarning",
     "IndentationError",
+    "IndexError",
+    "InterruptedError",
+    "IsADirectoryError",
+    "KeyError",
+    "KeyboardInterrupt",
+    "LookupError",
+    "MemoryError",
+    "ModuleNotFoundError",
     "NameError",
+    "None",
+    "NotADirectoryError",
+    "NotImplemented",
+    "NotImplementedError",
+    "OSError",
+    "OverflowError",
+    "PendingDeprecationWarning",
+    "PermissionError",
+    "ProcessLookupError",
+    "RecursionError",
+    "ReferenceError",
+    "ResourceWarning",
+    "RuntimeError",
+    "RuntimeWarning",
+    "StopAsyncIteration",
+    "StopIteration",
+    "SyntaxError",
+    "SyntaxWarning",
+    "SystemError",
+    "SystemExit",
+    "TabError",
+    "TimeoutError",
+    "True",
     "TypeError",
+    "UnboundLocalError",
+    "UnicodeDecodeError",
+    "UnicodeEncodeError",
+    "UnicodeError",
+    "UnicodeTranslateError",
+    "UnicodeWarning",
+    "UserWarning",
+    "ValueError",
+    "Warning",
+    "ZeroDivisionError",
 ]
 
 
@@ -470,7 +561,11 @@ def lesson_page(lesson_slug):
     progress = get_or_create_progress(current_user.id, lesson_slug)
     incorrect_answer = request.args.get("incorrect", 0, type=int) == 1
 
-    if not progress.test_passed and not progress.completed and progress.unlocked_step > 2:
+    if (
+        not progress.test_passed
+        and not progress.completed
+        and progress.unlocked_step > 2
+    ):
         progress.unlocked_step = 2
         db.session.commit()
 
@@ -577,7 +672,17 @@ def require_api_key(view_function):
     return decorated_function
 
 
-def run_script(image, timeout, code, stdins=""):
+@login_required
+def run_script(
+    image,
+    timeout,
+    code,
+    stdins="",
+    expected_output=None,
+    user_id=None,
+    lesson_slug=None,
+    step_order=None,
+):
     random_user_dir = f"{random.randint(1000, 2000)}"
     user_dir_url = os.path.join(
         os.path.dirname(__file__), "users_task_scripts", random_user_dir
@@ -591,6 +696,8 @@ def run_script(image, timeout, code, stdins=""):
     with open(file_url, "w") as file:
         file.write(template_code)
         file.write(code)
+
+    result = {"stdout": "", "error": "None", "success": False, "step_completed": False}
 
     try:
         client = docker.from_env()
@@ -609,6 +716,29 @@ def run_script(image, timeout, code, stdins=""):
         subprocess.Popen(f"docker rm -f {container.id}", shell=True)
 
         answer_list = [str(line, "utf-8") for line in answer]
+        result["stdout"] = "".join(answer_list)
+
+        for error_check in error_list:
+            if any(error_check in ans for ans in answer_list):
+                result["error"] = error_check
+                break
+
+        if expected_output and result["error"] == "None":
+            actual_output = result["stdout"].strip()
+            expected = expected_output.strip()
+
+            if actual_output == expected:
+                result["success"] = True
+
+                if user_id and lesson_slug and step_order:
+                    result["step_completed"] = update_lesson_progress(
+                        user_id, lesson_slug, step_order
+                    )
+            else:
+                result["success"] = False
+                result["error"] = (
+                    f"Wrong output. Expected: {expected}, Got: {actual_output}"
+                )
 
     except Exception as e:
         answer_list = [f"Server error: {str(e)}"]
@@ -617,13 +747,37 @@ def run_script(image, timeout, code, stdins=""):
         # Clean up
         shutil.rmtree(user_dir_url)
 
-    error = "None"
-    for error_check in error_list:
-        if any(error_check in ans for ans in answer_list):
-            error = error_check
-            break
+    return result
 
-    return {"stdout": "".join(answer_list), "error": error}
+
+def update_lesson_progress(user_id, lesson_slug, step_order):
+    try:
+        progress = UserLessonProgress.query.filter_by(
+            user_id=user_id,
+            lesson_slug=lesson_slug,
+        ).first()
+
+        if not progress:
+            progress = UserLessonProgress(
+                user_id=user_id,
+                lesson_slug=lesson_slug,
+                unlocked_step=1,
+            )
+            db.session.add(progress)
+
+        if step_order >= progress.unlocked_step:
+            progress.unlocked_step = step_order + 1
+
+        lesson = LESSONS.get(lesson_slug)
+        if lesson and step_order >= len(lesson["steps"]):
+            progress.completed = True
+
+        db.session.commit()
+        return True
+
+    except Exception as e:
+        print(f"Error updating progress: {e}")
+        return False
 
 
 @app.route("/python-ide", methods=["POST"])
@@ -634,6 +788,10 @@ def python_ide():
         data = request.json
         stdin_list = data.get("stdin", [])
         answer_list = []
+        code = data.get("code", "")
+        expected_output = data.get("expected_output", None)
+        lesson_slug = data.get("lesson_slug", None)
+        step_order = data.get("step_order", None)
 
         for stdins in stdin_list:
             answer = run_script(
@@ -641,6 +799,10 @@ def python_ide():
                 timeout=data["timeout"],
                 code=data["code"],
                 stdins=stdins,
+                expected_output=expected_output,
+                user_id=current_user.id if expected_output else None,
+                lesson_slug=lesson_slug,
+                step_order=step_order,
             )
             answer_list.append(answer)
 
