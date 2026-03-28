@@ -29,35 +29,35 @@
 
     {% block body %}
     <main class="dashboard">
-        <h1 class="dashboard__title">Список уроков</h1>
+        <h1 class="dashboard__title font">Список уроков</h1>
 
         <div class="dashboard__courses">
             <article class="dashboard__course">
                 <img src="{{ url_for('static', filename='1.png') }}" alt="course1"
                     class="dashboard__course-image">
-                <h2 class="dashboard__course-title">Вступление</h2>
+                <h2 class="dashboard__course-title font">Вступление</h2>
                 <p class="dashboard__course-description font">В этом разделе ты познакомишься с языком Python — одним из самых популярных и простых языков программирования в мире.
                     Узнаешь, кто его создал и почему у него такое необычное название. А главное — ты сразу начнёшь практиковаться.
                 </p>
-                <a href="{{ url_for('lesson_page', lesson_slug='lesson-1') }}" class="dashboard__course-link">Перейти к уроку</a>
+                <a href="{{ url_for('lesson_page', lesson_slug='lesson-1') }}" class="dashboard__course-link font">Перейти к уроку</a>
             </article>
             <article class="dashboard__course">
                 <img src="{{ url_for('static', filename='2.png') }}" alt="course2"
                     class="dashboard__course-image">
-                <h2 class="dashboard__course-title">Переменные и операторы</h2>
+                <h2 class="dashboard__course-title font">Переменные и операторы</h2>
                 <p class="dashboard__course-description font">В этом разделе ты научишься хранить информацию в переменных — как в коробках с наклейками, где можно положить имя, возраст, количество монет или что угодно.
                     Узнаешь, как заставить компьютер считать: складывать, вычитать, умножать, делить и даже возводить в степень. Познакомишься с операторами — специальными знаками, которые помогают работать с числами.
                     Ты сможешь менять значения переменных и проверять, чётное число или нет.
 </p>
-                <a href="{{ url_for('lesson_page', lesson_slug='lesson-2') }}" class="dashboard__course-link">Перейти к уроку</a>
+                <a href="{{ url_for('lesson_page', lesson_slug='lesson-2') }}" class="dashboard__course-link font">Перейти к уроку</a>
             </article>
             <article class="dashboard__course">
                 <img src="{{ url_for('static', filename='3.png') }}" alt="course3"
                     class="dashboard__course-image">
-                <h2 class="dashboard__course-title">Условия и циклы</h2>
+                <h2 class="dashboard__course-title font">Условия и циклы</h2>
                 <p class="dashboard__course-description font">В этом разделе ты научишься заставлять программу принимать решения. С помощью условий программа сможет отвечать по-разному: «если пароль верный — пускаем, если нет — не пускаем».
 Ты узнаешь, как заставить компьютер повторять одно и то же действие много раз, не переписывая код. Циклы помогут тебе выводить числа от 1 до 100 одной строчкой, а не сотней команд.</p>
-                <a href="{{ url_for('lesson_page', lesson_slug='lesson-3') }}" class="dashboard__course-link">Перейти к уроку</a>
+                <a href="{{ url_for('lesson_page', lesson_slug='lesson-3') }}" class="dashboard__course-link font">Перейти к уроку</a>
             </article>
 
         </div>
