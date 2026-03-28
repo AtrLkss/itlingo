@@ -87,15 +87,30 @@
     grid-template-columns: 280px minmax(0, 1fr);
     gap: 24px;
     align-items: start;
+    padding: 12px;
+    border: 6px solid #2563EB;
+    border-radius: 18px;
+    min-height: 400px;
+    margin-bottom: 12px;
 }
 
 .lesson-theory__nav {
     position: sticky;
     top: 24px;
+    align-self: center;
 }
 
 .lesson-theory__content {
     min-width: 0;
+    max-height: 360px;
+    overflow-y: auto;
+    padding-right: 12px;
+}
+
+.lesson-theory__nav .list-group {
+    border: 1px solid #DEE2E6;
+    border-radius: 12px;
+    overflow: hidden;
 }
 
 .lesson-card .theory-text {
