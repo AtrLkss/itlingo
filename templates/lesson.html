@@ -12,184 +12,146 @@
         <section class="lesson-card">
             <div class="lesson-steps">
                 {% for step in lesson.steps %}
-                    {% set is_locked = step.order > progress.unlocked_step %}
-                    <a
-                        href="{% if not is_locked %}{{ url_for('lesson_page', lesson_slug=lesson_slug, step=step.order) }}{% else %}#{% endif %}"
-                        class="lesson-card__step{% if step.order == current_step.order %} lesson-card__step--active{% endif %}{% if is_locked %} lesson-card__step--locked{% endif %} font"
-                    >
-                        {% if step.type == "theory" %}
-                            Теория
-                        {% elif step.type == "test" %}
-                            Тест
-                        {% elif step.type == "practice" %}
-                            Практика
-                        {% endif %}
-                    </a>
+                {% set is_locked = step.order > progress.unlocked_step %}
+                <a href="{% if not is_locked %}{{ url_for('lesson_page', lesson_slug=lesson_slug, step=step.order) }}{% else %}#{% endif %}"
+                    class="lesson-card__step{% if step.order == current_step.order %} lesson-card__step--active{% endif %}{% if is_locked %} lesson-card__step--locked{% endif %} font">
+                    {% if step.type == "theory" %}
+                    Теория
+                    {% elif step.type == "test" %}
+                    Тест
+                    {% elif step.type == "practice" %}
+                    Практика
+                    {% endif %}
+                </a>
                 {% endfor %}
             </div>
 
             <div class="lesson-card__content">
                 {% if current_step.type == "theory" %}
-                    <h2 class="font">{{ current_step.title }}</h2>
-                    <div class="col-9">
-                        <div class="col-4">
-                            <div id="list-example" class="list-group">
-                                <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-1">{{ current_step["turtle-1"] }}</a>
-                                <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-2">{{ current_step["turtle-2"] }}</a>
-                                <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-3">{{ current_step["turtle-3"] }}</a>
-                                <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-4">{{ current_step["turtle-4"] }}</a>
-                            </div>
-                        </div>
-                        <div class="col-8">
-                            <div
-                                data-bs-spy="scroll"
-                                data-bs-target="#list-example"
-                                data-bs-smooth-scroll="true"
-                                class="scrollspy-example"
-                                tabindex="0"
-                            >
-                                <h3 id="list-item-1">{{ current_step["turtle-1"] }}</h3>
-                                <p class="theory-text">{{ current_step["content-1"] }}</p>
-                                <h3 id="list-item-2">{{ current_step["turtle-2"] }}</h3>
-                                <p class="theory-text">{{ current_step["content-2"] }}</p>
-                                <h3 id="list-item-3">{{ current_step["turtle-3"] }}</h3>
-                                <p class="theory-text">{{ current_step["content-3"] }}</p>
-                                <h3 id="list-item-4">{{ current_step["turtle-4"] }}</h3>
-                                <p class="theory-text">{{ current_step["content-4"] }}</p>
-                            </div>
+                <h2 class="font">{{ current_step.title }}</h2>
+                <div class="col-9">
+                    <div class="col-4">
+                        <div id="list-example" class="list-group">
+                            <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-1">{{
+                                current_step["turtle-1"] }}</a>
+                            <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-2">{{
+                                current_step["turtle-2"] }}</a>
+                            <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-3">{{
+                                current_step["turtle-3"] }}</a>
+                            <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-4">{{
+                                current_step["turtle-4"] }}</a>
                         </div>
                     </div>
+                    <div class="col-8">
+                        <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-smooth-scroll="true"
+                            class="scrollspy-example" tabindex="0">
+                            <h3 id="list-item-1">{{ current_step["turtle-1"] }}</h3>
+                            <p class="theory-text">{{ current_step["content-1"] }}</p>
+                            <h3 id="list-item-2">{{ current_step["turtle-2"] }}</h3>
+                            <p class="theory-text">{{ current_step["content-2"] }}</p>
+                            <h3 id="list-item-3">{{ current_step["turtle-3"] }}</h3>
+                            <p class="theory-text">{{ current_step["content-3"] }}</p>
+                            <h3 id="list-item-4">{{ current_step["turtle-4"] }}</h3>
+                            <p class="theory-text">{{ current_step["content-4"] }}</p>
+                        </div>
+                    </div>
+                </div>
 
-                    <form
-                        method="post"
-                        action="{{ url_for('complete_step', lesson_slug=lesson_slug, step_order=current_step.order) }}"
-                        class="lesson-card__action"
-                    >
-                        <input type="hidden" name="answer" value="read">
-                        <button type="submit" class="lesson-card__action-button">
-                            Перейти к следующему этапу
-                        </button>
-                    </form>
+                <form method="post"
+                    action="{{ url_for('complete_step', lesson_slug=lesson_slug, step_order=current_step.order) }}"
+                    class="lesson-card__action">
+                    <input type="hidden" name="answer" value="read">
+                    <button type="submit" class="lesson-card__action-button">
+                        Перейти к следующему этапу
+                    </button>
+                </form>
 
                 {% elif current_step.type == "test" %}
-                    <h2 class="font">{{ current_step.title }}</h2>
-                    <p class="font">{{ current_step.task }}</p>
+                <h2 class="font">{{ current_step.title }}</h2>
+                <p class="font">{{ current_step.task }}</p>
 
-                    {% if incorrect_answer %}
-                        <p class="lesson-error font">Попробуй еще раз</p>
-                    {% endif %}
+                {% if incorrect_answer %}
+                <p class="lesson-error font">Попробуй еще раз</p>
+                {% endif %}
 
-                    <form
-                        method="post"
-                        action="{{ url_for('complete_step', lesson_slug=lesson_slug, step_order=current_step.order) }}"
-                        class="lesson-test__form"
-                    >
-                        {% for question in current_step.questions %}
-                            <div class="lesson-test__question">
-                                <h3 class="lesson-test__question-title font">{{ loop.index }}. {{ question.prompt }}</h3>
-                                <div class="lesson-test__options">
-                                    {% for option in question.options %}
-                                        <label class="lesson-test__option">
-                                            <input type="radio" name="{{ question.id }}" value="{{ option.value }}">
-                                            <span class="font">{{ option.label }}</span>
-                                        </label>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        {% endfor %}
-                        <button type="submit" class="lesson-card__action-button">
-                            Ответить и перейти дальше
-                        </button>
-                    </form>
+                <form method="post"
+                    action="{{ url_for('complete_step', lesson_slug=lesson_slug, step_order=current_step.order) }}"
+                    class="lesson-test__form">
+                    {% for question in current_step.questions %}
+                    <div class="lesson-test__question">
+                        <h3 class="lesson-test__question-title font">{{ loop.index }}. {{ question.prompt }}</h3>
+                        <div class="lesson-test__options">
+                            {% for option in question.options %}
+                            <label class="lesson-test__option">
+                                <input type="radio" name="{{ question.id }}" value="{{ option.value }}">
+                                <span class="font">{{ option.label }}</span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="lesson-card__action-button">
+                        Ответить и перейти дальше
+                    </button>
+                </form>
 
                 {% elif current_step.type == "practice" %}
-                    <div class="lesson-practice">
-                        <div class="lesson-practice__terminal">
-                            Тут позже будет терминал
-                        </div>
-
-                        <aside class="lesson-practice__sidebar">
-                            <h2>{{ current_step.title }}</h2>
-                            <p>{{ current_step.task }}</p>
-
-                            <textarea id="code" placeholder="Напиши здесь свой код..."></textarea>
-                            <br>
-                            <button type="button" onclick="runCode()">Run Code</button>
-                            <h3>Output:</h3>
-                            <pre id="output"></pre>
-
-                            <script>
-                                async function runCode() {
-                                    const code = document.getElementById("code").value;
-                                    const response = await fetch("/python-ide", {
-                                        method: "POST",
-                                        headers: { "Content-Type": "application/json" },
-                                        body: JSON.stringify({
-                                            key: "snILjFUkk_A",
-                                            image: "python:3.9",
-                                            timeout: "5",
-                                            code: code,
-                                            stdin: [""]
-                                        })
-                                    });
-                                    const result = await response.json();
-                                    document.getElementById("output").textContent =
-                                        result[0].stdout + (result[0].error !== "None" ? result[0].error : "");
-                                }
-                            </script>
-
-                            <details>
-                                <summary>Подсказка</summary>
-                                <p>{{ current_step.hint }}</p>
-                            </details>
-
-                            <form
-                                method="post"
-                                action="{{ url_for('complete_step', lesson_slug=lesson_slug, step_order=current_step.order) }}"
-                                class="lesson-card__action"
-                            >
-                                <button type="submit" class="lesson-card__action-button">
-                                    {% if current_step.order < lesson.steps|length %}
-                                        Перейти к следующему этапу
-                                    {% else %}
-                                        Завершить урок
-                                    {% endif %}
-                                </button>
-                            </form>
-                        </aside>
+                <div class="lesson-practice">
+                    <div class="lesson-practice__editor">
+                        <textarea id="code" class="lesson-practice__terminal"
+                            placeholder="Напиши здесь свой код..."></textarea>
                     </div>
+
+                    <aside class="lesson-practice__sidebar">
+                        <h2>{{ current_step.title }}</h2>
+                        <p>{{ current_step.task }}</p>
+
+                        <button type="button" onclick="runCode()">Run Code</button>
+
+                        <details>
+                            <summary>Подсказка</summary>
+                            <p>{{ current_step.hint }}</p>
+                        </details>
+
+                        <form method="post"
+                            action="{{ url_for('complete_step', lesson_slug=lesson_slug, step_order=current_step.order) }}"
+                            class="lesson-card__action">
+                            <button type="submit" class="lesson-card__action-button">
+                                {% if current_step.order < lesson.steps|length %} Перейти к следующему этапу {% else %}
+                                    Завершить урок {% endif %} </button>
+                        </form>
+                    </aside>
+                    <h3>Output:</h3> <br>
+                    <pre id="output"></pre>
+                </div>
                 {% endif %}
 
                 <div class="lesson-card__nav">
                     {% if current_step.order > 1 %}
-                        <a
-                            href="{{ url_for('lesson_page', lesson_slug=lesson_slug, step=current_step.order - 1) }}"
-                            class="lesson-card__nav-button lesson-card__nav-button--secondary"
-                        >
-                            Назад
-                        </a>
+                    <a href="{{ url_for('lesson_page', lesson_slug=lesson_slug, step=current_step.order - 1) }}"
+                        class="lesson-card__nav-button lesson-card__nav-button--secondary">
+                        Назад
+                    </a>
                     {% else %}
-                        <span class="lesson-card__nav-button lesson-card__nav-button--disabled">
-                            Назад
-                        </span>
+                    <span class="lesson-card__nav-button lesson-card__nav-button--disabled">
+                        Назад
+                    </span>
                     {% endif %}
 
-                    {% if current_step.order < progress.unlocked_step %}
-                        <a
-                            href="{{ url_for('lesson_page', lesson_slug=lesson_slug, step=current_step.order + 1) }}"
-                            class="lesson-card__nav-button"
-                        >
-                            Следующий этап
+                    {% if current_step.order < progress.unlocked_step %} <a
+                        href="{{ url_for('lesson_page', lesson_slug=lesson_slug, step=current_step.order + 1) }}"
+                        class="lesson-card__nav-button">
+                        Следующий этап
                         </a>
-                    {% elif current_step.order >= lesson.steps|length %}
+                        {% elif current_step.order >= lesson.steps|length %}
                         <a href="{{ url_for('learn') }}" class="lesson-card__nav-button">
                             К списку уроков
                         </a>
-                    {% else %}
+                        {% else %}
                         <span class="lesson-card__nav-button lesson-card__nav-button--disabled">
                             Сначала заверши этап
                         </span>
-                    {% endif %}
+                        {% endif %}
                 </div>
             </div>
         </section>
@@ -197,34 +159,55 @@
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const theoryLinks = document.querySelectorAll(".theory-nav-link");
+    document.addEventListener("DOMContentLoaded", function () {
+        const theoryLinks = document.querySelectorAll(".theory-nav-link");
 
-    const setActiveLink = (activeLink) => {
-        theoryLinks.forEach((link) => {
-            link.classList.remove("theory-nav-link--active");
-            link.classList.remove("active");
-        });
-        if (activeLink) {
-            activeLink.classList.add("theory-nav-link--active");
-            activeLink.classList.add("active");
-        }
-    };
-
-    if (theoryLinks.length > 0) {
-        setActiveLink(theoryLinks[0]);
-    }
-
-    theoryLinks.forEach((link) => {
-        link.addEventListener("click", function (event) {
-            event.preventDefault();
-            setActiveLink(this);
-            const target = document.querySelector(this.getAttribute("href"));
-            if (target) {
-                target.scrollIntoView({ behavior: "smooth", block: "start" });
+        const setActiveLink = (activeLink) => {
+            theoryLinks.forEach((link) => {
+                link.classList.remove("theory-nav-link--active");
+                link.classList.remove("active");
+            });
+            if (activeLink) {
+                activeLink.classList.add("theory-nav-link--active");
+                activeLink.classList.add("active");
             }
+        };
+
+        if (theoryLinks.length > 0) {
+            setActiveLink(theoryLinks[0]);
+        }
+
+        theoryLinks.forEach((link) => {
+            link.addEventListener("click", function (event) {
+                event.preventDefault();
+                setActiveLink(this);
+                const target = document.querySelector(this.getAttribute("href"));
+                if (target) {
+                    target.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+            });
         });
     });
-});
 </script>
+
+<script>
+    async function runCode() {
+        const code = document.getElementById("code").value;
+        const response = await fetch("/python-ide", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                key: "snILjFUkk_A",
+                image: "python:3.9",
+                timeout: "5",
+                code: code,
+                stdin: [""]
+            })
+        });
+        const result = await response.json();
+        document.getElementById("output").textContent =
+            result[0].stdout + (result[0].error !== "None" ? result[0].error : "");
+    }
+</script>
+
 {% endblock %}

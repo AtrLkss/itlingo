@@ -628,6 +628,7 @@ def run_script(image, timeout, code, stdins=""):
 
 @app.route("/python-ide", methods=["POST"])
 @require_api_key
+@login_required
 def python_ide():
     try:
         data = request.json
