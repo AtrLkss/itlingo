@@ -153,3 +153,14 @@
     font-family: 'Nunito', sans-serif;
     font-weight: bold;
 }
+.col-4{
+  height: 400px;
+  overflow-y: auto;
+  position: relative;
+  padding-block: 110px ;
+}
+.col-8{
+    height: 400px;
+    overflow-y: auto;
+    position: relative;
+}
