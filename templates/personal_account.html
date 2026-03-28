@@ -5,76 +5,82 @@
 {% endblock %}
 
 {% block body %}
-
-<div class="container">
-    <div class="row align-items-center">
-        <div class="col-md-3">
-            <h3 class="mb-0">Статистика {{ user.name }}</h3>
-        </div>
-        <div class="col-md-3 text-end">
-            <span class="fw-bold">Уровень {{ user.level }}</span>
-        </div>
-        <div class="col-md-4">
-            <div class="progress" role="progressbar" style="height: 25px;">
-                <div class="progress-bar bg-primary" role="progressbar" style="width: {{ ((user.exp % 1000) / 1000) }}%"
-                    aria-valuenow="{{ user.exp }}" aria-valuemin="0" aria-valuemax="1000">
-                    {{ ((user.exp % 1000) / 1000 * 100) | round }}%
-                    {{user.exp % 1000}} / 1000 XP
+<main class="personal-account">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-3">
+                <h3 class="mb-0">Статистика {{ user.name }}</h3>
+            </div>
+            <div class="col-md-3 text-end">
+                <span class="fw-bold">Уровень {{ user.level }}</span>
+            </div>
+            <div class="col-md-4">
+                <div class="progress" role="progressbar" style="height: 25px;">
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: {{ ((user.exp % 1000) / 1000) * 100 }}%"
+                        aria-valuenow="{{ user.exp }}" aria-valuemin="0" aria-valuemax="1000">
+                        {{ ((user.exp % 1000) / 1000 * 100) | round }}%
+                        {{ user.exp % 1000 }} / 1000 XP
+                    </div>
                 </div>
             </div>
+            <div class="col-md-2">
+                <span class="fw-bold">Уровень {{ user.level + 1 }}</span>
+            </div>
         </div>
-        <div class="col-md-2">
-            <span class="fw-bold">Уровень {{ user.level + 1 }}</span>
+
+        <div class="row mt-2">
+            <div class="col-md-8 text-muted">{{ user.exp }} / 1000 XP</div>
         </div>
     </div>
 
-    <div class="row mt-2">
-        <div class="col-md-8 text-muted"> {{ user.exp }} / 1000 XP</div>
-    </div>
-</div>
+    <div class="container mt-4">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm personal-account__section">
+                    <div class="card-body">
+                        <h3 class="card-title text-center personal-account__section-title">Достижения</h3>
 
-<div class="container mt-4">
-    <div class=" row g-4">
-        <div class="col-md-6">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h3 class="card-title text-center">Достижения</h3>
-                    <div class="row">
-                        <div class="col-md-4 text-center">
-                            <img src="{{ url_for('static', filename='images/first_steps.jpg') }}" alt="Первые шаги"
-                                class="img-fluid rounded">
+                        <div class="row g-3 personal-account__achievements">
+                            {% for achievement in user_achievements %}
+                                <div class="col-md-6">
+                                    <article class="personal-account__achievement text-center">
+                                        <img
+                                            src="{{ url_for('static', filename=achievement.icon) }}"
+                                            alt="{{ achievement.title }}"
+                                            class="img-fluid rounded personal-account__achievement-image"
+                                        >
+                                        <p class="mt-2 mb-1 fw-bold personal-account__achievement-title">{{ achievement.title }}</p>
+                                        <p class="small text-muted mb-0 personal-account__achievement-text">{{ achievement.description }}</p>
+                                    </article>
+                                </div>
+                            {% else %}
+                                <div class="col-12">
+                                    <p class="text-muted mb-0 text-center">Пока достижений нет.</p>
+                                </div>
+                            {% endfor %}
                         </div>
-                        <div class="col-md-4 text-center">
-                            <img src="{{ url_for('static', filename='images/first_steps.jpg') }}" alt="Первые шаги"
-                                class="img-fluid rounded">
-                        </div>
-                        <div class="col-md-4 text-center">
-                            <img src="{{ url_for('static', filename='images/first_steps.jpg') }}" alt="Первые шаги"
-                                class="img-fluid rounded">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm personal-account__section">
+                    <div class="card-body">
+                        <h3 class="card-title text-center personal-account__section-title">Навыки</h3>
+                        <div class="row g-3">
+                            <div class="col-md-6 text-center">
+                                <img src="{{ url_for('static', filename='images/python_begginer.jpg') }}"
+                                    alt="Python: новичок" class="img-fluid rounded personal-account__skill-image">
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <img src="{{ url_for('static', filename='images/csharp_expert.jpg') }}"
+                                    alt="C#: эксперт" class="img-fluid rounded personal-account__skill-image">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="col-md-6">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h3 class="card-title text-center">Навыки</h3>
-                    <div class="row">
-                        <div class="col-md-4 text-center">
-                            <img src="{{ url_for('static', filename='images/python_begginer.jpg') }}"
-                                alt="Python: Новичок" class="img-fluid rounded">
-                        </div>
-                        <div class="col-md-4 text-center">
-                            <img src="{{ url_for('static', filename='images/csharp_expert.jpg') }}" alt="C#: Эксперт"
-                                class="img-fluid rounded">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-</div>
-
+</main>
 {% endblock %}

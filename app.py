@@ -1,4 +1,4 @@
-﻿from flask import Flask, render_template, request, url_for, redirect, jsonify
+﻿from flask import Flask, render_template, request, url_for, redirect, jsonify, flash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 from flask_login import (
@@ -128,7 +128,21 @@ def logout():
 @app.route("/personal_account")
 @login_required
 def personal_account():
-    return render_template("personal_account.html", user=current_user)
+    achievement_rows = UserAchievement.query.filter_by(
+        user_id=current_user.id
+    ).order_by(UserAchievement.created_at.desc()).all()
+
+    user_achievements = []
+    for row in achievement_rows:
+        achievement = ACHIEVEMENTS.get(row.achievement_slug)
+        if achievement:
+            user_achievements.append(achievement)
+
+    return render_template(
+        "personal_account.html",
+        user=current_user,
+        user_achievements=user_achievements,
+    )
 
 
 @app.route("/learn")
@@ -143,11 +157,18 @@ class UserLessonProgress(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     lesson_slug = db.Column(db.String(100), nullable=False)
-    unlocked_step = db.Column(db.Integer, default=2)
+    unlocked_step = db.Column(db.Integer, default=1)
     test_passed = db.Column(db.Boolean, default=False)
     completed = db.Column(db.Boolean, default=False)
     reward_claimed = db.Column(db.Boolean, default=False)
 
+class UserAchievement(db.Model):
+    __tablename__ = "user_achievements"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    achievement_slug = db.Column(db.String(100), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 LESSONS = {
     "lesson-1": {
@@ -261,10 +282,11 @@ LESSONS = {
             {
                 "order": 2,
                 "type": "test",
-                "title": "В разработке",
-                "task": "...",
-                "options": "...",
-                "correct": "....",
+                "title": "PROVERKA PO TEORII",
+                "task": "Kakoi yazik mi izuchaem?",
+                "options": ["C++", "Python", "Java"],
+                "correct": "Python",
+            
             },
             {
                 "order": 3,
@@ -277,25 +299,59 @@ LESSONS = {
     },
 }
 
+ACHIEVEMENTS = {
+    "lesson-1-test": {
+        "title": "Первые шаги",
+        "description": "Вы успешно прошли тест 1 урока и получили это достижение!",
+        "icon": "images/first_steps.jpg",
+    },
+    "lesson-2-test": {
+        "title": "Переменные освоены",
+        "description": "Вы успешно прошли тест 2 урока и получили это достижение!",
+        "icon": "images/python_begginer.jpg",
+    },
+    "lesson-3-test": {
+        "title": "Циклы покорены",
+        "description": "Вы успешно прошли тест 3 урока и получили это достижение!",
+        "icon": "images/csharp_expert.jpg",
+    },
+}
+
 
 def get_or_create_progress(user_id, lesson_slug):
     progress = UserLessonProgress.query.filter_by(
-        user_id=user_id, lesson_slug=lesson_slug
+        user_id=user_id,
+        lesson_slug=lesson_slug,
     ).first()
 
     if progress is None:
-        progress = UserLessonProgress(
-            user_id=user_id,
-            lesson_slug=lesson_slug,
-            unlocked_step=2,
-        )
+        progress = UserLessonProgress(user_id=user_id, lesson_slug=lesson_slug)
         db.session.add(progress)
-        db.session.commit()
-    elif progress.unlocked_step < 2:
-        progress.unlocked_step = 2
         db.session.commit()
 
     return progress
+
+
+def give_achievement(user_id, achievement_slug):
+    existing = UserAchievement.query.filter_by(
+        user_id=user_id,
+        achievement_slug=achievement_slug,
+    ).first()
+
+    if existing:
+        return None
+
+    achievement = ACHIEVEMENTS.get(achievement_slug)
+    if achievement is None:
+        return None
+
+    db.session.add(
+        UserAchievement(
+            user_id=user_id,
+            achievement_slug=achievement_slug,
+        )
+    )
+    return achievement
 
 
 def ensure_progress_columns():
@@ -332,13 +388,14 @@ def lesson_page(lesson_slug):
         progress.unlocked_step = 2
         db.session.commit()
 
-    step_number = request.args.get("step", 1, type=int)
+    step_number = request.args.get("step", progress.unlocked_step, type=int)
     step_number = min(step_number, progress.unlocked_step)
 
     current_step = next(
         (s for s in lesson["steps"] if s["order"] == step_number),
         lesson["steps"][0],
     )
+
     return render_template(
         "lesson.html",
         lesson=lesson,
@@ -366,7 +423,7 @@ def complete_step(lesson_slug, step_order):
     is_correct = True
 
     if current_step["type"] == "theory":
-        is_correct = answer.strip() != ""
+        is_correct = answer != ""
     elif current_step["type"] == "test":
         is_correct = answer == current_step["correct"]
     elif current_step["type"] == "practice":
@@ -378,7 +435,10 @@ def complete_step(lesson_slug, step_order):
         db.session.commit()
         return redirect(
             url_for(
-                "lesson_page", lesson_slug=lesson_slug, step=step_order, incorrect=1
+                "lesson_page",
+                lesson_slug=lesson_slug,
+                step=step_order,
+                incorrect=1,
             )
         )
 
@@ -388,6 +448,13 @@ def complete_step(lesson_slug, step_order):
         elif current_step["type"] == "test":
             progress.test_passed = True
             progress.unlocked_step = max(progress.unlocked_step, 3)
+
+            achievement = give_achievement(current_user.id, f"{lesson_slug}-test")
+            if achievement:
+                flash(
+                    f"Вы получили достижение: {achievement['title']}!",
+                    "achievement",
+                )
         elif step_order < len(lesson["steps"]):
             progress.unlocked_step = max(progress.unlocked_step, step_order + 1)
         else:
