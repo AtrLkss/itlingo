@@ -13,8 +13,10 @@
             <div class="lesson-steps">
                 {% for step in lesson.steps %}
                 {% set is_locked = step.order > progress.unlocked_step %}
-                <a href="{% if not is_locked %}{{ url_for('lesson_page', lesson_slug=lesson_slug, step=step.order) }}{% else %}#{% endif %}"
-                    class="lesson-card__step{% if step.order == current_step.order %} lesson-card__step--active{% endif %}{% if is_locked %} lesson-card__step--locked{% endif %} font">
+                <a
+                    href="{% if not is_locked %}{{ url_for('lesson_page', lesson_slug=lesson_slug, step=step.order) }}{% else %}#{% endif %}"
+                    class="lesson-card__step{% if step.order == current_step.order %} lesson-card__step--active{% endif %}{% if is_locked %} lesson-card__step--locked{% endif %} font"
+                >
                     {% if step.type == "theory" %}
                     Теория
                     {% elif step.type == "test" %}
@@ -29,57 +31,76 @@
             <div class="lesson-card__content">
                 {% if current_step.type == "theory" %}
                 <h2 class="font">{{ current_step.title }}</h2>
-                <div class="col-9">
-                    <div class="col-4">
+
+                <div class="lesson-theory">
+                    <div class="lesson-theory__nav">
                         <div id="list-example" class="list-group">
-                            <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-1">{{
-                                current_step["turtle-1"] }}</a>
-                            <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-2">{{
-                                current_step["turtle-2"] }}</a>
-                            <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-3">{{
-                                current_step["turtle-3"] }}</a>
-                            <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-4">{{
-                                current_step["turtle-4"] }}</a>
+                            <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-1">
+                                {{ current_step["turtle-1"] }}
+                            </a>
+                            <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-2">
+                                {{ current_step["turtle-2"] }}
+                            </a>
+                            <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-3">
+                                {{ current_step["turtle-3"] }}
+                            </a>
+                            <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-4">
+                                {{ current_step["turtle-4"] }}
+                            </a>
                         </div>
                     </div>
-                    <div class="col-8">
-                        <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-smooth-scroll="true"
-                            class="scrollspy-example" tabindex="0">
+
+                    <div class="lesson-theory__content">
+                        <div
+                            data-bs-spy="scroll"
+                            data-bs-target="#list-example"
+                            data-bs-smooth-scroll="true"
+                            class="scrollspy-example"
+                            tabindex="0"
+                        >
                             <h3 id="list-item-1">{{ current_step["turtle-1"] }}</h3>
                             <p class="theory-text">{{ current_step["content-1"] }}</p>
+
                             <h3 id="list-item-2">{{ current_step["turtle-2"] }}</h3>
                             <p class="theory-text">{{ current_step["content-2"] }}</p>
+
                             <h3 id="list-item-3">{{ current_step["turtle-3"] }}</h3>
                             <p class="theory-text">{{ current_step["content-3"] }}</p>
+
                             <h3 id="list-item-4">{{ current_step["turtle-4"] }}</h3>
                             <p class="theory-text">{{ current_step["content-4"] }}</p>
                         </div>
                     </div>
                 </div>
 
-                <form method="post"
+                <form
+                    method="post"
                     action="{{ url_for('complete_step', lesson_slug=lesson_slug, step_order=current_step.order) }}"
-                    class="lesson-card__action">
+                    class="lesson-card__action"
+                >
                     <input type="hidden" name="answer" value="read">
                     <button type="submit" class="lesson-card__action-button">
-                        Перейти к следующему этапу
+                        Перейти к тесту
                     </button>
                 </form>
 
                 {% elif current_step.type == "test" %}
                 <h2 class="font">{{ current_step.title }}</h2>
-                <p class="font">{{ current_step.task }}</p>
 
                 {% if incorrect_answer %}
-                <p class="lesson-error font">Попробуй еще раз</p>
+                <p class="lesson-error font">Есть ошибки в ответах. Попробуй еще раз.</p>
                 {% endif %}
 
-                <form method="post"
+                <form
+                    method="post"
                     action="{{ url_for('complete_step', lesson_slug=lesson_slug, step_order=current_step.order) }}"
-                    class="lesson-test__form">
+                    class="lesson-test__form"
+                >
                     {% for question in current_step.questions %}
                     <div class="lesson-test__question">
-                        <h3 class="lesson-test__question-title font">{{ loop.index }}. {{ question.prompt }}</h3>
+                        <h3 class="lesson-test__question-title font">
+                            {{ loop.index }}. {{ question.prompt }}
+                        </h3>
                         <div class="lesson-test__options">
                             {% for option in question.options %}
                             <label class="lesson-test__option">
@@ -90,65 +111,86 @@
                         </div>
                     </div>
                     {% endfor %}
-                    <button type="submit" class="lesson-card__action-button">
-                        Ответить и перейти дальше
-                    </button>
+
+                    <div class="lesson-card__action">
+                        <button type="submit" class="lesson-card__action-button">
+                            Проверить ответы
+                        </button>
+                    </div>
                 </form>
 
                 {% elif current_step.type == "practice" %}
                 <div class="lesson-practice">
                     <div class="lesson-practice__editor">
-                        <textarea id="code" class="lesson-practice__terminal"
-                            placeholder="Напиши здесь свой код..."></textarea>
+                        <p class="lesson-practice__label font">Редактор кода</p>
+                        <textarea
+                            id="code"
+                            class="lesson-practice__terminal"
+                            placeholder="Напиши здесь свой код..."
+                        ></textarea>
+
+                        <div class="lesson-practice__actions">
+                            <button
+                                type="button"
+                                class="lesson-card__action-button"
+                                onclick="runCode()"
+                            >
+                                Проверить код
+                            </button>
+                        </div>
+
+                        <div class="lesson-practice__output-block">
+                            <p class="lesson-practice__label font">Вывод программы</p>
+                            <pre id="output" class="lesson-practice__output"></pre>
+                        </div>
                     </div>
 
                     <aside class="lesson-practice__sidebar">
-                        <h2>{{ current_step.title }}</h2>
-                        <p>{{ current_step.task }}</p>
+                        <h2 class="font">{{ current_step.title }}</h2>
+                        <p class="font">{{ current_step.task }}</p>
 
                         <details>
                             <summary>Подсказка</summary>
-                            <p>{{ current_step.hint }}</p>
+                            <p class="font">{{ current_step.hint }}</p>
                         </details>
 
-                        <form method="post"
+                        {% if incorrect_answer %}
+                        <p id="practice-message" class="lesson-error font">
+                            Вывод не совпадает с ожидаемым результатом. Попробуй еще раз.
+                        </p>
+                        {% else %}
+                        <p id="practice-message" class="lesson-practice__status font">
+                            Сначала запусти код и добейся правильного результата.
+                        </p>
+                        {% endif %}
+
+                        {% if progress.completed %}
+                        <div class="lesson-card__action">
+                            <a href="{{ url_for('learn') }}" class="lesson-card__action-button">
+                                Вернуться к урокам
+                            </a>
+                        </div>
+                        {% else %}
+                        <form
+                            method="post"
                             action="{{ url_for('complete_step', lesson_slug=lesson_slug, step_order=current_step.order) }}"
-                            class="lesson-card__action">
-                            <button type="submit" class="lesson-card__action-button" id="end_lesson">
-                                {% if current_step.order < lesson.steps|length %} Перейти к следующему этапу {% else %}
-                                    Завершить урок {% endif %} </button>
+                            class="lesson-card__action"
+                            onsubmit="prepareSubmission()"
+                        >
+                            <input type="hidden" name="actual_output" id="submission-output" value="">
+                            <button
+                                type="submit"
+                                class="lesson-card__action-button"
+                                id="practice-complete-button"
+                                disabled
+                            >
+                                Завершить урок
+                            </button>
                         </form>
+                        {% endif %}
                     </aside>
                 </div>
                 {% endif %}
-
-                <div class="lesson-card__nav">
-                    {% if current_step.order > 1 %}
-                    <a href="{{ url_for('lesson_page', lesson_slug=lesson_slug, step=current_step.order - 1) }}"
-                        class="lesson-card__nav-button lesson-card__nav-button--secondary">
-                        Назад
-                    </a>
-                    {% else %}
-                    <span class="lesson-card__nav-button lesson-card__nav-button--disabled">
-                        Назад
-                    </span>
-                    {% endif %}
-
-                    {% if current_step.order < progress.unlocked_step %} <a
-                        href="{{ url_for('lesson_page', lesson_slug=lesson_slug, step=current_step.order + 1) }}"
-                        class="lesson-card__nav-button">
-                        Следующий этап
-                        </a>
-                        {% elif current_step.order >= lesson.steps|length %}
-                        <a href="{{ url_for('learn') }}" class="lesson-card__nav-button">
-                            К списку уроков
-                        </a>
-                        {% else %}
-                        <span class="lesson-card__nav-button lesson-card__nav-button--disabled">
-                            Сначала заверши этап
-                        </span>
-                        {% endif %}
-                </div>
             </div>
         </section>
     </main>
@@ -163,6 +205,7 @@
                 link.classList.remove("theory-nav-link--active");
                 link.classList.remove("active");
             });
+
             if (activeLink) {
                 activeLink.classList.add("theory-nav-link--active");
                 activeLink.classList.add("active");
@@ -186,55 +229,93 @@
     });
 </script>
 
+{% if current_step.type == "practice" %}
 <script>
-    const expectedOutput = "{{ expected_output }}";
-    const lessonSlug = "{{ lesson_slug }}";
-    const stepOrder = {{ current_step.order }};
-    const validationResult = document.getElementById("validation-result");
-    const errorMessageDiv = document.getElementById("error-message");
-    const nextButton = document.getElementById("next-step-button");
+    const expectedOutput = {{ current_step.get("expected_output", "") | tojson }};
+    const outputElement = document.getElementById("output");
+    const messageElement = document.getElementById("practice-message");
+    const completeButton = document.getElementById("practice-complete-button");
+    const submissionOutput = document.getElementById("submission-output");
+
+    function normalizeOutput(text) {
+        return (text || "").replace(/\r\n/g, "\n").trim();
+    }
 
     async function runCode() {
-        const code = document.getElementById("code").value;
-        const response = await fetch("/python-ide", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                key: "snILjFUkk_A",
-                image: "python:3.9",
-                timeout: "5",
-                code: code,
-                stdin: [""],
-                expected_output: expectedOutput,
-                lesson_slug: lessonSlug,
-                step_order: stepOrder
-            })
-        });
-        const result = await response.json();
-        const Result = result[0];
+        const codeElement = document.getElementById("code");
+        if (!codeElement) {
+            return;
+        }
 
-        if (executionResult.error !== "None") {
-            errorMessageDiv.textContent = "❌ " + executionResult.error;
-            nextButton.disabled = true;
+        outputElement.textContent = "";
+        messageElement.textContent = "Проверяем решение...";
+        messageElement.classList.remove("lesson-error");
+
+        if (completeButton) {
+            completeButton.disabled = true;
         }
-        else if (executionResult.success === true) {
-            errorMessageDiv.textContent = "✅ Правильно! Можно переходить к следующему этапу";
-            nextButton.disabled = false;
-        }
-        else if (expectedOutput) {
-            errorMessageDiv.textContent = "❌ Неверный вывод. Попробуй еще раз!";
-            nextButton.disabled = true;
-        }
-        else {
-            errorMessageDiv.textContent = "ℹ️ Выполнено. Нажмите 'Проверить', чтобы продолжить";
-            nextButton.disabled = false;
+
+        try {
+            const response = await fetch("/python-ide", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    key: "snILjFUkk_A",
+                    image: "python:3.9",
+                    timeout: "5",
+                    code: codeElement.value,
+                    stdin: [""],
+                    expected_output: expectedOutput
+                })
+            });
+
+            const result = await response.json();
+            const executionResult = Array.isArray(result) ? result[0] : result;
+            const stdout = executionResult.stdout || "";
+            const errorText =
+                executionResult.error && executionResult.error !== "None"
+                    ? executionResult.error
+                    : "";
+
+            outputElement.textContent = stdout;
+
+            if (submissionOutput) {
+                submissionOutput.value = stdout;
+            }
+
+            if (errorText) {
+                if (outputElement.textContent) {
+                    outputElement.textContent += "\n\n";
+                }
+                outputElement.textContent += errorText;
+                messageElement.textContent = "Код выполнился с ошибкой. Исправь ее и попробуй еще раз.";
+                messageElement.classList.add("lesson-error");
+                return;
+            }
+
+            if (normalizeOutput(stdout) === normalizeOutput(expectedOutput)) {
+                messageElement.textContent = "Все верно. Теперь можно завершить урок.";
+                messageElement.classList.remove("lesson-error");
+                if (completeButton) {
+                    completeButton.disabled = false;
+                }
+                return;
+            }
+
+            messageElement.textContent = "Вывод не совпадает с ожидаемым результатом. Попробуй еще раз.";
+            messageElement.classList.add("lesson-error");
+        } catch (error) {
+            outputElement.textContent = "";
+            messageElement.textContent = "Не удалось проверить код. Попробуй еще раз чуть позже.";
+            messageElement.classList.add("lesson-error");
         }
     }
 
     function prepareSubmission() {
-        const code = document.getElementById("code").value;
-        document.getElementById("submission-code").value = code;
+        if (submissionOutput) {
+            submissionOutput.value = normalizeOutput(submissionOutput.value);
+        }
     }
 </script>
-
+{% endif %}
 {% endblock %}
