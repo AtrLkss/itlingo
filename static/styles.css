@@ -181,3 +181,20 @@
 .theory-text {
     white-space: pre-line;
 }
+.superbutton{
+    border-radius: 8px;
+    border-color: #F59E0B;
+    color: #000000;
+    background-color: #F59E0B;
+    font-family: 'Nunito', sans-serif;
+}
+.superbutton:hover{
+    border-radius: 8px;
+    border-color: #F59E0B;
+    color: #383838;
+    background-color: #f0b551;
+    font-family: 'Nunito', sans-serif;
+}
+.lesson-error{
+    color: rgb(255, 17, 17);
+}

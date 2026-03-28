@@ -1,5 +1,6 @@
 ﻿from flask import Flask, render_template, request, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import text
 from flask_login import (
     LoginManager,
     UserMixin,
@@ -138,6 +139,7 @@ class UserLessonProgress(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     lesson_slug = db.Column(db.String(100), nullable=False)
     unlocked_step = db.Column(db.Integer, default=1)
+    test_passed = db.Column(db.Boolean, default=False)
     completed = db.Column(db.Boolean, default=False)
     reward_claimed = db.Column(db.Boolean, default=False)
 
@@ -151,21 +153,39 @@ LESSONS = {
             {
                 "order": 1,
                 "type": "theory",
-                "title": "Что такое Python?",
-                "content-1": "...",
-                "content-2": "...",
-                "content-3": "...",
-                "content-4": "...",
+                "title": "Вступление",
+                "turtle-1": "Что такое Python?",
+                "turtle-2": "Почему пайтон идеален для начинающих?",
+                "turtle-3": "Первая программа",
+                "turtle-4": "",
+                "content-1": """"Представьте себе язык, на котором вы можете разговаривать с компьютером так же естественно, как с другом. Язык, который понимает ваши мысли и помогает воплощать идеи в жизнь без лишних преград. Это — Python.
+                
+                Python — это язык программирования, который появился в 1991 году благодаря голландскому разработчику Гвидо ван Россуму. Название было вдохновлено не змеей, как многие думают, а британским комедийным шоу «Летающий цирк Монти Пайтона». Создатель хотел, чтобы язык был таким же веселым, простым и доступным.
+                
+                Сегодня Python — один из самых популярных языков программирования в мире. Его любят за простоту, читаемость и мощь. На Python пишут всё: от простых скриптов до сложных систем искусственного интеллекта, веб-сайтов и научных исследований.""",
+                "content-2": """Почему Python идеален для начинающих? Представьте, что вы учитесь кататься на велосипеде. Можно начать со сложного гоночного велосипеда с десятком передач, а можно с простого, устойчивого и надежного. Python — это тот самый надежный велосипед.
+
+                Вот что делает Python особенным. Во-первых, читаемость. Код на Python похож на английский язык. Вместо запутанных скобок и сложных конструкций — понятные слова и логичные структуры. Во-вторых, простота. Чтобы написать первую программу, достаточно одной строчки. Вам не нужно изучать сотни правил перед тем, как увидеть результат. В-третьих, сообщество. Миллионы разработчиков по всему миру используют Python. Любой ваш вопрос уже задавали до вас, и ответ на него легко найти. И наконец, универсальность. Выучив Python, вы сможете работать в разных направлениях: веб-разработка, анализ данных, искусственный интеллект, автоматизация, создание игр и многое другое.
+                """,
+                "content-3": """В программировании есть традиция: первая программа на новом языке должна выводить фразу «Hello, World!». Это как первый шаг в большом путешествии.
+                
+                Python позволяет сделать это одной строчкой:
+
+                print("Hello, World!")
+
+                Разберем, что здесь происходит. print — это команда (функция), которая говорит компьютеру: «Выведи на экран то, что я укажу». В скобках помещается то, что мы хотим вывести. А кавычки показывают, что внутри находится текст — в программировании это называется «строка».
+                """,
+                "content-4": "",
                 "question": "Python - Это змея или Язык программирования?",
                 "answer": "Да",
             },
             {
                 "order": 2,
                 "type": "test",
-                "title": "PROVERKA PO TEORII",
-                "task": "Kakoi yazik mi izuchaem?",
-                "options": ["C++", "Python", "Java"],
-                "correct": "Python",
+                "title": "Тест",
+                "task": "Какая функция позволяет вывести текст на экран в Python?",
+                "options": ["print", "write", "pen"],
+                "correct": "print",
             },
             {
                 "order": 3,
@@ -184,7 +204,11 @@ LESSONS = {
             {
                 "order": 1,
                 "type": "theory",
-                "title": "Что такое Python?",
+                "title": "Переменные и операторы",
+                "turtle-1": "",
+                "turtle-2": "",
+                "turtle-3": "",
+                "turtle-4": "",
                 "content-1": "...",
                 "content-2": "...",
                 "content-3": "...",
@@ -217,7 +241,11 @@ LESSONS = {
             {
                 "order": 1,
                 "type": "theory",
-                "title": "Что такое Python?",
+                "title": "Условия и циклы",
+                "turtle-1": "",
+                "turtle-2": "",
+                "turtle-3": "",
+                "turtle-4": "",
                 "content-1": "...",
                 "content-2": "...",
                 "content-3": "...",
@@ -258,6 +286,21 @@ def get_or_create_progress(user_id, lesson_slug):
     return progress
 
 
+def ensure_progress_columns():
+    columns = {
+        row[1]
+        for row in db.session.execute(text("PRAGMA table_info(user_lesson_progress)"))
+    }
+    if "test_passed" not in columns:
+        db.session.execute(
+            text(
+                "ALTER TABLE user_lesson_progress "
+                "ADD COLUMN test_passed BOOLEAN DEFAULT 0"
+            )
+        )
+        db.session.commit()
+
+
 def add_exp(user, amount):
     user.exp += amount
     user.level = user.exp // 1000 + 1
@@ -271,6 +314,11 @@ def lesson_page(lesson_slug):
         return redirect(url_for("learn"))
 
     progress = get_or_create_progress(current_user.id, lesson_slug)
+    incorrect_answer = request.args.get("incorrect", 0, type=int) == 1
+
+    if not progress.test_passed and progress.unlocked_step > 2:
+        progress.unlocked_step = 2
+        db.session.commit()
 
     step_number = request.args.get("step", progress.unlocked_step, type=int)
     step_number = min(step_number, progress.unlocked_step)
@@ -285,6 +333,7 @@ def lesson_page(lesson_slug):
         lesson_slug=lesson_slug,
         current_step=current_step,
         progress=progress,
+        incorrect_answer=incorrect_answer,
         user=current_user,
     )
 
@@ -311,8 +360,21 @@ def complete_step(lesson_slug, step_order):
     elif current_step["type"] == "practice":
         is_correct = True
 
+    if not is_correct and current_step["type"] == "test":
+        progress.test_passed = False
+        progress.unlocked_step = min(progress.unlocked_step, step_order)
+        db.session.commit()
+        return redirect(
+            url_for("lesson_page", lesson_slug=lesson_slug, step=step_order, incorrect=1)
+        )
+
     if is_correct:
-        if step_order < len(lesson["steps"]):
+        if current_step["type"] == "theory":
+            progress.unlocked_step = max(progress.unlocked_step, 2)
+        elif current_step["type"] == "test":
+            progress.test_passed = True
+            progress.unlocked_step = max(progress.unlocked_step, 3)
+        elif step_order < len(lesson["steps"]):
             progress.unlocked_step = max(progress.unlocked_step, step_order + 1)
         else:
             progress.completed = True
@@ -329,6 +391,7 @@ def complete_step(lesson_slug, step_order):
 
 with app.app_context():
     db.create_all()
+    ensure_progress_columns()
 
 if __name__ == "__main__":
     app.run(debug=True)

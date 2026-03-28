@@ -48,6 +48,24 @@ text-transform: capitalize;
     margin: 0 0 16px;
     line-height: 1.6;
 }
+.lesson-test__form {
+    display: grid;
+    gap: 12px;
+    max-width: 720px;
+}
+.lesson-test__option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid #bfdbfe;
+    border-radius: 12px;
+    background-color: #eff6ff !important;
+}
+.lesson-error {
+    color: #dc2626;
+    font-weight: 700;
+}
 .lesson-practice {
     display: grid;
     grid-template-columns: 2fr 1fr;
