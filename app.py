@@ -138,7 +138,7 @@ class UserLessonProgress(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     lesson_slug = db.Column(db.String(100), nullable=False)
-    unlocked_step = db.Column(db.Integer, default=1)
+    unlocked_step = db.Column(db.Integer, default=2)
     test_passed = db.Column(db.Boolean, default=False)
     completed = db.Column(db.Boolean, default=False)
     reward_claimed = db.Column(db.Boolean, default=False)
@@ -279,8 +279,15 @@ def get_or_create_progress(user_id, lesson_slug):
     ).first()
 
     if progress is None:
-        progress = UserLessonProgress(user_id=user_id, lesson_slug=lesson_slug)
+        progress = UserLessonProgress(
+            user_id=user_id,
+            lesson_slug=lesson_slug,
+            unlocked_step=2,
+        )
         db.session.add(progress)
+        db.session.commit()
+    elif progress.unlocked_step < 2:
+        progress.unlocked_step = 2
         db.session.commit()
 
     return progress
