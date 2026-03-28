@@ -250,6 +250,7 @@ LESSONS = {
                 "title": "Практическое задание",
                 "task": "Напиши программу, которая выводит на экран строку Hello, World! с помощью функции print().",
                 "hint": 'Используй print("Hello, World!")',
+                "expected_output": "Hello, World!",
                 "exp_reward": 250,
             },
         ],
@@ -319,6 +320,7 @@ LESSONS = {
                 "title": "Практическое задание",
                 "task": "Создай две переменные a и b со значениями 7 и 5, а затем выведи их сумму на экран.",
                 "hint": "Напиши a = 7, b = 5, а потом print(a + b).",
+                "expected_output": "12",
                 "exp_reward": 250,
             },
         ],
@@ -391,6 +393,7 @@ LESSONS = {
                 "title": "Практическое задание",
                 "task": "Напиши цикл for, который выводит числа от 1 до 5, каждое с новой строки.",
                 "hint": "Используй for i in range(1, 6): и внутри print(i).",
+                "expected_output": "1\n2\n3\n4\n5",
                 "exp_reward": 250,
             },
         ],
@@ -612,9 +615,15 @@ def complete_step(lesson_slug, step_order):
             for question in questions
         )
     elif current_step["type"] == "practice":
-        is_correct = True
+        actual_output = request.form.get("actual_output", "")
+        expected_output = current_step.get("expected_output", "")
+        normalized_actual = actual_output.replace("\r\n", "\n").strip()
+        normalized_expected = expected_output.replace("\r\n", "\n").strip()
+        is_correct = (
+            normalized_expected != "" and normalized_actual == normalized_expected
+        )
 
-    if not is_correct and current_step["type"] == "test":
+    if not is_correct and current_step["type"] in {"test", "practice"}:
         return redirect(
             url_for(
                 "lesson_page",
@@ -651,9 +660,11 @@ def complete_step(lesson_slug, step_order):
 
         db.session.commit()
 
-    return redirect(
-        url_for("lesson_page", lesson_slug=lesson_slug, step=progress.unlocked_step)
-    )
+    next_step = step_order
+    if is_correct and step_order < len(lesson["steps"]):
+        next_step = step_order + 1
+
+    return redirect(url_for("lesson_page", lesson_slug=lesson_slug, step=next_step))
 
 
 with app.app_context():
@@ -679,9 +690,6 @@ def run_script(
     code,
     stdins="",
     expected_output=None,
-    user_id=None,
-    lesson_slug=None,
-    step_order=None,
 ):
     random_user_dir = f"{random.randint(1000, 2000)}"
     user_dir_url = os.path.join(
@@ -697,7 +705,7 @@ def run_script(
         file.write(template_code)
         file.write(code)
 
-    result = {"stdout": "", "error": "None", "success": False, "step_completed": False}
+    result = {"stdout": "", "error": "None", "success": False}
 
     try:
         client = docker.from_env()
@@ -724,16 +732,11 @@ def run_script(
                 break
 
         if expected_output and result["error"] == "None":
-            actual_output = result["stdout"].strip()
-            expected = expected_output.strip()
+            actual_output = result["stdout"].replace("\r\n", "\n").strip()
+            expected = expected_output.replace("\r\n", "\n").strip()
 
             if actual_output == expected:
                 result["success"] = True
-
-                if user_id and lesson_slug and step_order:
-                    result["step_completed"] = update_lesson_progress(
-                        user_id, lesson_slug, step_order
-                    )
             else:
                 result["success"] = False
                 result["error"] = (
@@ -741,43 +744,12 @@ def run_script(
                 )
 
     except Exception as e:
-        answer_list = [f"Server error: {str(e)}"]
+        result["error"] = f"Server error: {str(e)}"
 
     finally:
-        # Clean up
-        shutil.rmtree(user_dir_url)
+        shutil.rmtree(user_dir_url, ignore_errors=True)
 
     return result
-
-
-def update_lesson_progress(user_id, lesson_slug, step_order):
-    try:
-        progress = UserLessonProgress.query.filter_by(
-            user_id=user_id,
-            lesson_slug=lesson_slug,
-        ).first()
-
-        if not progress:
-            progress = UserLessonProgress(
-                user_id=user_id,
-                lesson_slug=lesson_slug,
-                unlocked_step=1,
-            )
-            db.session.add(progress)
-
-        if step_order >= progress.unlocked_step:
-            progress.unlocked_step = step_order + 1
-
-        lesson = LESSONS.get(lesson_slug)
-        if lesson and step_order >= len(lesson["steps"]):
-            progress.completed = True
-
-        db.session.commit()
-        return True
-
-    except Exception as e:
-        print(f"Error updating progress: {e}")
-        return False
 
 
 @app.route("/python-ide", methods=["POST"])
@@ -788,10 +760,7 @@ def python_ide():
         data = request.json
         stdin_list = data.get("stdin", [])
         answer_list = []
-        code = data.get("code", "")
         expected_output = data.get("expected_output", None)
-        lesson_slug = data.get("lesson_slug", None)
-        step_order = data.get("step_order", None)
 
         for stdins in stdin_list:
             answer = run_script(
@@ -800,9 +769,6 @@ def python_ide():
                 code=data["code"],
                 stdins=stdins,
                 expected_output=expected_output,
-                user_id=current_user.id if expected_output else None,
-                lesson_slug=lesson_slug,
-                step_order=step_order,
             )
             answer_list.append(answer)
 

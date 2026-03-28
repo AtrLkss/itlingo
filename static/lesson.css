@@ -82,12 +82,20 @@
     margin: 0 0 12px;
 }
 
-.lesson-card .col-9 {
-    font-weight: 600;
+.lesson-theory {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
 }
 
-.lesson-card .col-8 {
-    font-size: 16px;
+.lesson-theory__nav {
+    position: sticky;
+    top: 24px;
+}
+
+.lesson-theory__content {
+    min-width: 0;
 }
 
 .lesson-card .theory-text {
@@ -172,47 +180,10 @@
     border-color: #f0b551;
 }
 
-.lesson-card__nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    margin-top: 28px;
-    padding-top: 20px;
-    border-top: 1px solid #E5E7EB;
-}
-
-.lesson-card__nav-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 46px;
-    padding: 10px 18px;
-    border-radius: 10px;
-    background-color: #2563EB;
-    color: #FFFFFF !important;
-    text-decoration: none !important;
-    font-weight: 700;
-}
-
-.lesson-card__nav-button:hover {
-    background-color: #1D4ED8;
-    color: #FFFFFF !important;
-}
-
-.lesson-card__nav-button--secondary {
-    background-color: #E5E7EB;
-    color: #111827 !important;
-}
-
-.lesson-card__nav-button--secondary:hover {
+.lesson-card__action-button:disabled {
     background-color: #D1D5DB;
-    color: #111827 !important;
-}
-
-.lesson-card__nav-button--disabled {
-    background-color: #9CA3AF;
-    color: #FFFFFF !important;
+    border-color: #D1D5DB;
+    color: #6B7280;
     cursor: not-allowed;
 }
 
@@ -241,10 +212,30 @@
     gap: 24px;
 }
 
+.lesson-practice__editor {
+    display: grid;
+    gap: 16px;
+}
+
+.lesson-practice__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.lesson-practice__label {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+}
+
 .lesson-practice__sidebar {
     padding: 20px;
     background-color: #f8fafc !important;
     border-radius: 16px;
+    display: grid;
+    align-content: start;
+    gap: 16px;
 }
 
 .lesson-practice__terminal {
@@ -256,21 +247,37 @@
     color: #e5e7eb !important;
 }
 
+.lesson-practice__output-block {
+    display: grid;
+    gap: 12px;
+}
+
+.lesson-practice__output {
+    min-height: 160px;
+    margin: 0;
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid #cbd5e1;
+    background-color: #f8fafc;
+    color: #111827;
+    white-space: pre-wrap;
+}
+
+.lesson-practice__status {
+    color: #1f2937;
+    font-weight: 700;
+}
+
 @media (max-width: 900px) {
     .lesson-steps {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .lesson-practice {
+    .lesson-theory {
         grid-template-columns: 1fr;
     }
 
-    .lesson-card__nav {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .lesson-card__nav-button {
-        width: 100%;
+    .lesson-practice {
+        grid-template-columns: 1fr;
     }
 }
