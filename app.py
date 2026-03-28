@@ -332,7 +332,7 @@ def lesson_page(lesson_slug):
         progress.unlocked_step = 2
         db.session.commit()
 
-    step_number = request.args.get("step", progress.unlocked_step, type=int)
+    step_number = request.args.get("step", 1, type=int)
     step_number = min(step_number, progress.unlocked_step)
 
     current_step = next(
