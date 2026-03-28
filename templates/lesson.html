@@ -16,81 +16,115 @@
                 >
                     {% if step.type == "theory" %}
                         Теория
-                    {% elif step.type == "test" %}
+                        {% elif step.type == "test" %}
                         Тест
-                    {% elif step.type == "practice" %}
+                        {% elif step.type == "practice" %}
                         Практика
-                    {% endif %}
-                </a>
-            {% endfor %}
-        </div>
-
-        <div class="lesson-card__content">
-            {% if current_step.type == "theory" %}
-                <h2 class="font">{{ current_step.title }}</h2>
-                <div class="col-9">
-                    <div class="col-4">
-                        <div id="list-example" class="list-group">
-                            <a class="list-group-item list-group-item-action" href="#list-item-1">{{ current_step["turtle-1"] }}</a>
-                            <a class="list-group-item list-group-item-action" href="#list-item-2">{{ current_step["turtle-2"] }}</a>
-                            <a class="list-group-item list-group-item-action" href="#list-item-3">{{ current_step["turtle-3"] }}</a>
-                            <a class="list-group-item list-group-item-action" href="#list-item-4">{{ current_step["turtle-4"] }}</a>
-                        </div>
-                    </div>
-                    <div class="col-8">
-                        <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-smooth-scroll="true" class="scrollspy-example" tabindex="0">
-                            <h3 id="list-item-1">{{ current_step["turtle-1"] }}</h3>
-                            <p class="theory-text">{{ current_step["content-1"] }}</p>
-                            <h3 id="list-item-2">{{ current_step["turtle-2"] }}</h3>
-                            <p class="theory-text">{{ current_step["content-2"] }}</p>
-                            <h3 id="list-item-3">{{ current_step["turtle-3"] }}</h3>
-                            <p class="theory-text">{{ current_step["content-3"] }}</p>
-                            <h3 id="list-item-4">{{ current_step["turtle-4"] }}</h3>
-                            <p class="theory-text">{{ current_step["content-4"] }}</p>
-                        </div>
-                    </div>
+                        {% endif %}
+                    </a>
+                    {% endfor %}
                 </div>
 
-            {% elif current_step.type == "test" %}
-                <h2 class="font">{{ current_step.title }}</h2>
-                <p class="font">{{ current_step.task }}</p>
+                <div class="lesson-card__content">
+                    {% if current_step.type == "theory" %}
+                    <h2 class="font">{{ current_step.title }}</h2>
+                    <div class="col-9">
+                        <div class="col-4">
+                            <div id="list-example" class="list-group">
+                                <a class="list-group-item list-group-item-action" href="#list-item-1">{{
+                                    current_step["turtle-1"] }}</a>
+                                <a class="list-group-item list-group-item-action" href="#list-item-2">{{
+                                    current_step["turtle-2"] }}</a>
+                                <a class="list-group-item list-group-item-action" href="#list-item-3">{{
+                                    current_step["turtle-3"] }}</a>
+                                <a class="list-group-item list-group-item-action" href="#list-item-4">{{
+                                    current_step["turtle-4"] }}</a>
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-smooth-scroll="true"
+                                class="scrollspy-example" tabindex="0">
+                                <h3 id="list-item-1">{{ current_step["turtle-1"] }}</h3>
+                                <p class="theory-text">{{ current_step["content-1"] }}</p>
+                                <h3 id="list-item-2">{{ current_step["turtle-2"] }}</h3>
+                                <p class="theory-text">{{ current_step["content-2"] }}</p>
+                                <h3 id="list-item-3">{{ current_step["turtle-3"] }}</h3>
+                                <p class="theory-text">{{ current_step["content-3"] }}</p>
+                                <h3 id="list-item-4">{{ current_step["turtle-4"] }}</h3>
+                                <p class="theory-text">{{ current_step["content-4"] }}</p>
+                            </div>
+                        </div>
+                    </div>
 
-                {% if incorrect_answer %}
+                    {% elif current_step.type == "test" %}
+                    <h2 class="font">{{ current_step.title }}</h2>
+                    <p class="font">{{ current_step.task }}</p>
+
+                    {% if incorrect_answer %}
                     <p class="lesson-error font">попробуй еще раз</p>
-                {% endif %}
+                    {% endif %}
 
-                <form method="post" action="{{ url_for('complete_step', lesson_slug=lesson_slug, step_order=current_step.order) }}" class="lesson-test__form">
-                    {% for option in current_step.options %}
+                    <form method="post"
+                        action="{{ url_for('complete_step', lesson_slug=lesson_slug, step_order=current_step.order) }}"
+                        class="lesson-test__form">
+                        {% for option in current_step.options %}
                         <label class="lesson-test__option">
                             <input type="radio" name="answer" value="{{ option }}">
                             <span class="font">{{ option }}</span>
                         </label>
-                    {% endfor %}
-                    <button type="submit" class="superbutton">Ответить</button>
-                </form>
+                        {% endfor %}
+                        <button type="submit" class="superbutton">Ответить</button>
+                    </form>
 
-            {% elif current_step.type == "practice" %}
-                <div class="lesson-practice">
-                    <div class="lesson-practice__terminal">
-                        Тут позже будет терминал
+                    {% elif current_step.type == "practice" %}
+                    <div class="lesson-practice">
+                        <div class="lesson-practice__terminal">
+                            Тут позже будет терминал
+                        </div>
+
+                        <aside class="lesson-practice__sidebar">
+                            <h2>{{ current_step.title }}</h2>
+                            <p>{{ current_step.task }}</p>
+
+                            <textarea id="code" placeholder="Напиши здесь свой код..."></textarea>
+                            <br>
+                            <button onclick="runCode()">Run Code</button>
+                            <h3>Output:</h3>
+                            <pre id="output"></pre>
+
+                            <script>
+                                async function runCode() {
+                                    const code = document.getElementById('code').value;
+                                    const response = await fetch('/python-ide', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({
+                                            key: "snILjFUkk_A",
+                                            image: "python:3.9",
+                                            timeout: "5",
+                                            code: code,
+                                            stdin: [""]
+                                        })
+                                    });
+                                    const result = await response.json();
+                                    document.getElementById('output').textContent = result[0].stdout + (result[0].error !== "None" ? result[0].error : "");
+                                }
+                            </script>
+
+                            <details>
+                                <summary>Подсказка</summary>
+                                <p>{{ current_step.hint }}</p>
+                            </details>
+
+                            <form method="post"
+                                action="{{ url_for('complete_step', lesson_slug=lesson_slug, step_order=current_step.order) }}">
+                                <button type="submit">Отметить как выполнено</button>
+                            </form>
+                        </aside>
                     </div>
-
-                    <aside class="lesson-practice__sidebar">
-                        <h2>{{ current_step.title }}</h2>
-                        <p>{{ current_step.task }}</p>
-                        <details>
-                            <summary>Подсказка</summary>
-                            <p>{{ current_step.hint }}</p>
-                        </details>
-
-                        <form method="post" action="{{ url_for('complete_step', lesson_slug=lesson_slug, step_order=current_step.order) }}">
-                            <button type="submit">Отметить как выполнено</button>
-                        </form>
-                    </aside>
+                    {% endif %}
                 </div>
-            {% endif %}
-        </div>
-    </section>
-</main>
+        </section>
+    </main>
 </div>
 {% endblock %}
