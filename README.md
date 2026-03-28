@@ -27,9 +27,7 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 ### 5. Запустить Docker Desktop
-```
-wsl --update
-```
+
 ### 6 Запустить проект
 ```powershell
 python app.py
