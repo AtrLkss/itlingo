@@ -12,7 +12,7 @@
                 {% set is_locked = step.order > progress.unlocked_step %}
                 <a
                     href="{% if not is_locked %}{{ url_for('lesson_page', lesson_slug=lesson_slug, step=step.order) }}{% else %}#{% endif %}"
-                    class="lesson-card__step{% if step.order == current_step.order %} lesson-card__step--active{% endif %}{% if is_locked %} lesson-card__step--locked{% endif %} font"
+                    class="lesson-card__step{% if step.order == current_step.order %} lesson-card__step--active{% endif %}{% if is_locked %} lesson-card__step--locked{% endif %} font "
                 >
                     {% if step.type == "theory" %}
                         Теория

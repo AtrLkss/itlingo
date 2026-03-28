@@ -154,32 +154,45 @@
     font-weight: bold;
 }
 .col-4{
-  height: 400px;
+  height: 100%;
   overflow-y: auto;
-  position: fixed;
-  padding-block: 110px ;
-  width: 400px;
-  margin-left: 30px;
+  position: sticky;
+  top: 0;
+  padding-block: 0;
+  width: 320px;
+  min-width: 320px;
+  margin-left: 0;
+  flex: 0 0 320px;
 }
 .col-8{
-    margin-left: 500px;
-    width: 700px;
-    margin-top: 30px;
+    margin-left: 0;
+    width: auto;
+    margin-top: 0;
+    padding-right: 0;
+    flex: 1 1 auto;
+    min-width: 0;
 }
 .col-9{
     border: 6px solid #2563EB;
     height: 400px;
-    width: 1320px;
+    width: 100%;
     overflow-y: auto;   
     position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 32px;
     border-radius: 18px;
-    margin-left: -13px;
+    margin-left: 0;
     margin-bottom: 10px;
     font-family: 'Nunito', sans-serif;
     font-weight: bold;
+    overflow-x: hidden;
+    box-sizing: border-box;
 }
 .theory-text {
     white-space: pre-line;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 .superbutton{
     border-radius: 8px;
@@ -197,4 +210,27 @@
 }
 .lesson-error{
     color: rgb(255, 17, 17);
+}
+@media (max-width: 1100px){
+    .col-9{
+        display: block;
+    }
+    .col-4{
+      position: static;
+      width: 100%;
+      min-width: 0;
+      flex: none;
+      height: auto;
+      padding-block: 0;
+    }
+    .col-8{
+        margin-left: 0;
+        width: 100%;
+        padding-right: 0;
+        flex: none;
+    }
+    .col-9{
+        height: auto;
+        min-height: 400px;
+    }
 }

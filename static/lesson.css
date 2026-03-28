@@ -17,36 +17,77 @@
     margin-bottom: 24px;
 }
 .lesson-card__step {
-display: flex;
-align-items: center;
-justify-content: center;
-min-height: 48px;
-padding: 10px 12px;
-border-radius: 12px;
-background-color: #eff6ff !important;
-border: 1px solid #bfdbfe !important;
-color: #2563eb !important;
-font-weight: 600;
-text-transform: capitalize;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    background-color: #2563EB !important;
+    border: 1px solid #2563EB !important;
+    color: #FFFFFF !important;
+    font-weight: 700;
+    text-transform: none;
+    text-decoration: none !important;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.lesson-card__step:hover {
+    background-color: #1D4ED8 !important;
+    border-color: #1D4ED8 !important;
+    color: #FFFFFF !important;
+    text-decoration: none !important;
 }
 .lesson-card__step--active {
-    background-color: #2563eb !important;
-    border-color: #2563eb !important;
-    color: #ffffff !important;
+    background-color: #F59E0B !important;
+    border-color: #F59E0B !important;
+    color: #111827 !important;
 }
-.lesson-card__step--locked {
-    background-color: #e5e7eb !important;
-    border-color: #e5e7eb !important;
-    color: #9ca3af !important;
+.lesson-card__step--active:hover {
+    background-color: #f0b551 !important;
+    border-color: #f0b551 !important;
+    color: #111827 !important;
+}
+.lesson-card__step--locked,
+.lesson-card__step--locked:hover {
+    background-color: #9CA3AF !important;
+    border-color: #9CA3AF !important;
+    color: #FFFFFF !important;
+    text-decoration: none !important;
     pointer-events: none;
     cursor: not-allowed;
 }
 .lesson-card__content h2 {
     margin: 0 0 16px;
+    font-size: 26px;
+    font-weight: 700;
 }
 .lesson-card__content p {
     margin: 0 0 16px;
     line-height: 1.6;
+}
+.lesson-card__content h3 {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin: 0 0 12px;
+}
+.lesson-card .col-9 {
+    font-weight: 600;
+}
+.lesson-card .col-8 {
+    font-size: 16px;
+}
+.lesson-card .theory-text {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.8;
+}
+.lesson-card .list-group-item {
+    font-size: 14px;
+    font-weight: 600;
+}
+.lesson-card__step {
+    font-size: 15px;
 }
 .lesson-test__form {
     display: grid;
