@@ -69,3 +69,46 @@
     background-color: #9CA3AF !important;
     color: #FFFFFF !important;
 }
+
+.dashboard__toast-container {
+    z-index: 1080;
+}
+
+.dashboard__toast {
+    min-width: 320px;
+}
+
+.personal-account {
+    padding-bottom: 32px;
+}
+
+.personal-account__section {
+    border: 1px solid #E5E7EB !important;
+    border-radius: 16px !important;
+}
+
+.personal-account__section-title {
+    margin-bottom: 20px;
+}
+
+.personal-account__achievement {
+    height: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    background-color: #F8FAFC;
+}
+
+.personal-account__achievement-image,
+.personal-account__skill-image {
+    width: 100%;
+    max-height: 180px;
+    object-fit: cover;
+}
+
+.personal-account__achievement-title {
+    color: #111827;
+}
+
+.personal-account__achievement-text {
+    line-height: 1.4;
+}
