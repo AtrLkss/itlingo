@@ -31,13 +31,13 @@
                     <div class="col-9">
                         <div class="col-4">
                             <div id="list-example" class="list-group">
-                                <a class="list-group-item list-group-item-action" href="#list-item-1">{{
+                                <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-1">{{
                                     current_step["turtle-1"] }}</a>
-                                <a class="list-group-item list-group-item-action" href="#list-item-2">{{
+                                <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-2">{{
                                     current_step["turtle-2"] }}</a>
-                                <a class="list-group-item list-group-item-action" href="#list-item-3">{{
+                                <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-3">{{
                                     current_step["turtle-3"] }}</a>
-                                <a class="list-group-item list-group-item-action" href="#list-item-4">{{
+                                <a class="list-group-item list-group-item-action theory-nav-link" href="#list-item-4">{{
                                     current_step["turtle-4"] }}</a>
                             </div>
                         </div>
@@ -125,6 +125,36 @@
                     {% endif %}
                 </div>
         </section>
-    </main>
+</main>
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const theoryLinks = document.querySelectorAll(".theory-nav-link");
+    const setActiveLink = (activeLink) => {
+        theoryLinks.forEach((link) => {
+            link.classList.remove("theory-nav-link--active");
+            link.classList.remove("active");
+        });
+        if (activeLink) {
+            activeLink.classList.add("theory-nav-link--active");
+            activeLink.classList.add("active");
+        }
+    };
+
+    if (theoryLinks.length > 0) {
+        setActiveLink(theoryLinks[0]);
+    }
+
+    theoryLinks.forEach((link) => {
+        link.addEventListener("click", function (event) {
+            event.preventDefault();
+            setActiveLink(this);
+            const target = document.querySelector(this.getAttribute("href"));
+            if (target) {
+                target.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        });
+    });
+});
+</script>
 {% endblock %}

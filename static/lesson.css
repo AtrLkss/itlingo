@@ -86,6 +86,23 @@
     font-size: 14px;
     font-weight: 600;
 }
+.lesson-card .list-group-item.active:not(.theory-nav-link--active) {
+    background-color: #ffffff !important;
+    border-color: #dee2e6 !important;
+    color: #212529 !important;
+}
+.lesson-card .theory-nav-link--active {
+    background-color: #F59E0B !important;
+    border-color: #2563EB !important;
+    color: #111827 !important;
+    box-shadow: none;
+}
+.lesson-card .theory-nav-link--active:hover {
+    background-color: #f0b551 !important;
+    border-color: #2563EB !important;
+    color: #111827 !important;
+    box-shadow: none;
+}
 .lesson-card__step {
     font-size: 15px;
 }
