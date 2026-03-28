@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect
+﻿from flask import Flask, render_template, request, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import (
     LoginManager,
@@ -52,7 +52,6 @@ class Lesson(db.Model):
     order = db.Column(db.Integer)
 
 
-
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -80,7 +79,7 @@ def register():
             db.session.add(user)
             db.session.commit()
             return redirect(url_for("login"))
-        except:
+        except Exception:
             return render_template(
                 "sign_up.html", error="При регистрации произошла ошибка!"
             )
@@ -125,27 +124,12 @@ def logout():
 def personal_account():
     return render_template("personal_account.html", user=current_user)
 
+
 @app.route("/learn")
 @login_required
 def learn():
     return render_template("learn.html", user=current_user)
-    
-# @app.route("/one")
-# @login_required
-# def one():
-#     return render_template("one.html", user=current_user)
 
-# @app.route("/two")
-# @login_required
-# def two():
-#     return render_template("two.html", user=current_user)
-
-# @app.route("/three")
-# @login_required
-# def three():
-#     return render_template("three.html", user=current_user)
-
-# VLAD
 
 class UserLessonProgress(db.Model):
     __tablename__ = "user_lesson_progress"
@@ -163,19 +147,17 @@ LESSONS = {
         "title": "Lesson 1",
         "description": "Description for Lesson 1",
         "reward_exp": 1000,
-        "steps": 
-        [
+        "steps": [
             {
                 "order": 1,
                 "type": "theory",
                 "title": "Что такое Python?",
-                "content-1": """Представьте себе язык, на котором вы можете разговаривать с компьютером так же естественно, как с другом. Язык, который понимает ваши мысли и помогает воплощать идеи в жизнь без лишних преград. Это — Python.
-                
-                Python — это язык программирования, который появился в 1991 году благодаря голландскому разработчику Гвидо ван Россуму. Название было вдохновлено не змеей, как многие думают, а британским комедийным шоу «Летающий цирк Монти Пайтона». Создатель хотел, чтобы язык был таким же веселым, простым и доступным.
-                
-                Сегодня Python — один из самых популярных языков программирования в мире. Его любят за простоту, читаемость и мощь. На Python пишут всё: от простых скриптов до сложных систем искусственного интеллекта, веб-сайтов и научных исследований.""",
+                "content-1": "...",
+                "content-2": "...",
+                "content-3": "...",
+                "content-4": "...",
                 "question": "Python - Это змея или Язык программирования?",
-                "answer": "Да"
+                "answer": "Да",
             },
             {
                 "order": 2,
@@ -183,34 +165,32 @@ LESSONS = {
                 "title": "PROVERKA PO TEORII",
                 "task": "Kakoi yazik mi izuchaem?",
                 "options": ["C++", "Python", "Java"],
-                "correct": "Python"
+                "correct": "Python",
             },
             {
                 "order": 3,
                 "type": "practice",
                 "title": "Практическое задание",
                 "task": "Напиши 'Hello, World!' на Python",
-                "hint": "Используй print()"
-            }
-        ]
+                "hint": "Используй print()",
+            },
+        ],
     },
     "lesson-2": {
         "title": "Lesson 2",
         "description": "Description for Lesson 2",
         "reward_exp": 1000,
-        "steps": 
-        [
+        "steps": [
             {
                 "order": 1,
                 "type": "theory",
                 "title": "Что такое Python?",
-                "content-1": """Представьте себе язык, на котором вы можете разговаривать с компьютером так же естественно, как с другом. Язык, который понимает ваши мысли и помогает воплощать идеи в жизнь без лишних преград. Это — Python.
-                
-                Python — это язык программирования, который появился в 1991 году благодаря голландскому разработчику Гвидо ван Россуму. Название было вдохновлено не змеей, как многие думают, а британским комедийным шоу «Летающий цирк Монти Пайтона». Создатель хотел, чтобы язык был таким же веселым, простым и доступным.
-                
-                Сегодня Python — один из самых популярных языков программирования в мире. Его любят за простоту, читаемость и мощь. На Python пишут всё: от простых скриптов до сложных систем искусственного интеллекта, веб-сайтов и научных исследований.""",
+                "content-1": "...",
+                "content-2": "...",
+                "content-3": "...",
+                "content-4": "...",
                 "question": "Python - Это змея или Язык программирования?",
-                "answer": "Да"
+                "answer": "Да",
             },
             {
                 "order": 2,
@@ -218,34 +198,32 @@ LESSONS = {
                 "title": "PROVERKA PO TEORII",
                 "task": "Kakoi yazik mi izuchaem?",
                 "options": ["C++", "Python", "Java"],
-                "correct": "Python"
+                "correct": "Python",
             },
             {
                 "order": 3,
                 "type": "practice",
                 "title": "Практическое задание",
                 "task": "Напиши 'Hello, World!' на Python",
-                "hint": "Используй print()"
-            }
-        ]
+                "hint": "Используй print()",
+            },
+        ],
     },
     "lesson-3": {
         "title": "Lesson 3",
         "description": "Description for Lesson 3",
         "reward_exp": 1000,
-        "steps": 
-        [
+        "steps": [
             {
                 "order": 1,
                 "type": "theory",
                 "title": "Что такое Python?",
-                "content-1": """Представьте себе язык, на котором вы можете разговаривать с компьютером так же естественно, как с другом. Язык, который понимает ваши мысли и помогает воплощать идеи в жизнь без лишних преград. Это — Python.
-                
-                Python — это язык программирования, который появился в 1991 году благодаря голландскому разработчику Гвидо ван Россуму. Название было вдохновлено не змеей, как многие думают, а британским комедийным шоу «Летающий цирк Монти Пайтона». Создатель хотел, чтобы язык был таким же веселым, простым и доступным.
-                
-                Сегодня Python — один из самых популярных языков программирования в мире. Его любят за простоту, читаемость и мощь. На Python пишут всё: от простых скриптов до сложных систем искусственного интеллекта, веб-сайтов и научных исследований.""",
+                "content-1": "...",
+                "content-2": "...",
+                "content-3": "...",
+                "content-4": "...",
                 "question": "Python - Это змея или Язык программирования?",
-                "answer": "Да"
+                "answer": "Да",
             },
             {
                 "order": 2,
@@ -253,17 +231,17 @@ LESSONS = {
                 "title": "PROVERKA PO TEORII",
                 "task": "Kakoi yazik mi izuchaem?",
                 "options": ["C++", "Python", "Java"],
-                "correct": "Python"
+                "correct": "Python",
             },
             {
                 "order": 3,
                 "type": "practice",
                 "title": "Практическое задание",
                 "task": "Напиши 'Hello, World!' на Python",
-                "hint": "Используй print()"
-            }
-        ]
-    }
+                "hint": "Используй print()",
+            },
+        ],
+    },
 }
 
 
@@ -291,15 +269,15 @@ def lesson_page(lesson_slug):
     lesson = LESSONS.get(lesson_slug)
     if lesson is None:
         return redirect(url_for("learn"))
-    
+
     progress = get_or_create_progress(current_user.id, lesson_slug)
 
     step_number = request.args.get("step", progress.unlocked_step, type=int)
     step_number = min(step_number, progress.unlocked_step)
 
     current_step = next(
-        (s for s in lesson["steps"] if s["order"] == step_number), 
-        lesson["steps"][0]
+        (s for s in lesson["steps"] if s["order"] == step_number),
+        lesson["steps"][0],
     )
     return render_template(
         "lesson.html",
@@ -307,9 +285,9 @@ def lesson_page(lesson_slug):
         lesson_slug=lesson_slug,
         current_step=current_step,
         progress=progress,
-        user=current_user
+        user=current_user,
     )
-    
+
 
 @app.route("/lessons/<lesson_slug>/steps/<int:step_order>/complete", methods=["POST"])
 @login_required
@@ -317,12 +295,12 @@ def complete_step(lesson_slug, step_order):
     lesson = LESSONS.get(lesson_slug)
     if lesson is None:
         return redirect(url_for("learn"))
-    
+
     progress = get_or_create_progress(current_user.id, lesson_slug)
     current_step = next((s for s in lesson["steps"] if s["order"] == step_order), None)
     if current_step is None or step_order > progress.unlocked_step:
         return redirect(url_for("lesson_page", lesson_slug=lesson_slug))
-    
+
     answer = request.form.get("answer", "").strip()
     is_correct = True
 
@@ -344,7 +322,10 @@ def complete_step(lesson_slug, step_order):
 
         db.session.commit()
 
-    return redirect(url_for("lesson_page", lesson_slug=lesson_slug, step=progress.unlocked_step,))
+    return redirect(
+        url_for("lesson_page", lesson_slug=lesson_slug, step=progress.unlocked_step)
+    )
+
 
 with app.app_context():
     db.create_all()
