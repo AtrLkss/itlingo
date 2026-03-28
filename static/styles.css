@@ -1,7 +1,7 @@
-
 .login {
     color: #ffffff !important;
 }
+
 .login:hover {
     color: #ffffff !important;
     text-decoration: underline white;
@@ -11,25 +11,31 @@
     color: #000000 !important;
     background-color: #F59E0B !important;
 }
+
 .active:hover {
     color: #383838 !important;
     background-color: #f0b551 !important;
 }
-.container.mt-10{
+
+.container.mt-10 {
     background-color: #2563EB !important;
     border-radius: 18px;
 }
-.fs-4{
+
+.fs-4 {
     color: #FFFFFF !important;
 }
-.fs-4:hover{
+
+.fs-4:hover {
     color: #FFFFFF !important;
-    text-decoration: underline white   ;
+    text-decoration: underline white;
 }
- .site-header {
+
+.site-header {
     padding: 20px 0;
- }
- .site-header__container {
+}
+
+.site-header__container {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -49,15 +55,18 @@
     color: #FFFFFF !important;
     text-decoration: none !important;
 }
+
 .site-header__nav {
     display: flex;
     align-items: center;
     gap: 12px;
 }
+
 .site-header__brand:hover {
     color: #FFFFFF !important;
     text-decoration: underline white;
 }
+
 .site-header__link {
     color: #FFFFFF !important;
     text-decoration: none !important;
@@ -65,46 +74,55 @@
     padding: 10px 16px;
     border-radius: 8px;
 }
+
 .site-header__logo {
     width: 40px;
     height: 40px;
     object-fit: contain;
 }
+
 .site-header__link:hover {
     color: #FFFFFF !important;
     text-decoration: underline white;
 }
+
 .site-header__link--active {
     color: #000000 !important;
     background-color: #F59E0B !important;
     border-radius: 8px;
 }
+
 .site-header__link--active:hover {
     color: #383838 !important;
     background-color: #f0b551 !important;
     border-radius: 8px;
     text-decoration: none !important;
 }
+
 .hero {
     padding: 80px 20px;
 }
+
 .hero__img {
     width: 300px;
     height: auto;
     margin-bottom: 24px;
 }
+
 .hero__container {
     max-width: 900px;
     margin: 0 auto;
     padding: 40px 20px;
     text-align: center;
 }
+
 .hero__title {
     font-size: 48px;
     font-weight: 700;
     color: #111827 !important;
     margin: 0 0 16px;
 }
+
 .hero__description {
     margin: 0 0 24px;
     font-size: 20px;
@@ -118,6 +136,7 @@
     color: #6B7280 !important;
     margin-bottom: 24px;
 }
+
 .hero__text {
     color: #2563EB !important;
     text-decoration: none !important;
@@ -128,11 +147,13 @@
     margin: 0;
     font-size: 20px;
 }
+
 .hero__actions {
     display: flex;
     justify-content: center;
     gap: 16px;
 }
+
 .hero__button {
     color: #000000 !important;
     text-decoration: none !important;
@@ -143,31 +164,35 @@
     font-size: 18px;
     display: inline-block;
 }
+
 .hero__button:hover {
     color: #383838 !important;
     background-color: #f0b551 !important;
     border-radius: 8px;
     text-decoration: none !important;
 }
-.font{
+
+.font {
     font-family: 'Nunito', sans-serif;
     font-weight: bold;
 }
-.col-4{
-  height: auto;
-  overflow-y: visible;
-  position: relative;
-  top: auto;
-  padding-block: 0;
-  width: 320px;
-  min-width: 320px;
-  margin-left: 0;
-  flex: 0 0 320px;
-  align-self: center;
-  display: flex;
-  align-items: center;
+
+.col-4 {
+    height: auto;
+    overflow-y: visible;
+    position: relative;
+    top: auto;
+    padding-block: 0;
+    width: 320px;
+    min-width: 320px;
+    margin-left: 0;
+    flex: 0 0 320px;
+    align-self: center;
+    display: flex;
+    align-items: center;
 }
-.col-8{
+
+.col-8 {
     margin-left: 0;
     width: auto;
     margin-top: 0;
@@ -179,7 +204,8 @@
     overflow-x: hidden;
     padding: 0 20px 0 0;
 }
-.col-9{
+
+.col-9 {
     border: 6px solid #2563EB;
     height: 400px;
     width: 100%;
@@ -196,43 +222,50 @@
     overflow-x: hidden;
     box-sizing: border-box;
 }
+
 .theory-text {
     white-space: pre-line;
     overflow-wrap: anywhere;
     word-break: break-word;
 }
-.superbutton{
+
+.superbutton {
     border-radius: 8px;
     border-color: #F59E0B;
     color: #000000;
     background-color: #F59E0B;
     font-family: 'Nunito', sans-serif;
 }
-.superbutton:hover{
+
+.superbutton:hover {
     border-radius: 8px;
     border-color: #F59E0B;
     color: #383838;
     background-color: #f0b551;
     font-family: 'Nunito', sans-serif;
 }
-.lesson-error{
+
+.lesson-error {
     color: rgb(255, 17, 17);
 }
-@media (max-width: 1100px){
-    .col-9{
+
+@media (max-width: 1100px) {
+    .col-9 {
         display: block;
     }
-    .col-4{
-      position: static;
-      width: 100%;
-      min-width: 0;
-      flex: none;
-      height: auto;
-      padding-block: 0;
-      align-self: auto;
-      display: block;
+
+    .col-4 {
+        position: static;
+        width: 100%;
+        min-width: 0;
+        flex: none;
+        height: auto;
+        padding-block: 0;
+        align-self: auto;
+        display: block;
     }
-    .col-8{
+
+    .col-8 {
         margin-left: 0;
         width: 100%;
         padding-right: 0;
@@ -240,7 +273,8 @@
         height: auto;
         overflow: visible;
     }
-    .col-9{
+
+    .col-9 {
         height: auto;
         min-height: 400px;
     }
