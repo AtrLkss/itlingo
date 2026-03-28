@@ -7,7 +7,30 @@
 <main class="lesson-page">
     <section class="lesson-card">
         <div class="row">
-  <div class="col-4">
+        <div class="lesson-steps">
+            {% for step in lesson.steps %}
+                {% set is_locked = step.order > progress.unlocked_step %}
+                <a
+                    href="{% if not is_locked %}{{ url_for('lesson_page', lesson_slug=lesson_slug, step=step.order) }}{% else %}#{% endif %}"
+                    class="lesson-card__step{% if step.order == current_step.order %} lesson-card__step--active{% endif %}{% if is_locked %} lesson-card__step--locked{% endif %}"
+                >
+                    {% if step.type == "theory" %}
+                        Теория
+                    {% elif step.type == "test" %}
+                        Тест
+                    {% elif step.type == "practice" %}
+                        Практика
+                    {% endif %}
+
+                </a>
+            {% endfor %}
+        </div>
+
+        <div class="lesson-card__content">
+            {% if current_step.type == "theory" %}
+                <h2>{{ current_step.title }}</h2>              
+                  <div class="col-9">
+    <div class="col-4">
     <div id="list-example" class="list-group">
       <a class="list-group-item list-group-item-action" href="#list-item-1">1.Что такое Python?</a>
       <a class="list-group-item list-group-item-action" href="#list-item-2">Item 2</a>
@@ -36,37 +59,12 @@
     </div>
   </div>
 </div>
-        
-        <div class="lesson-steps">
-            {% for step in lesson.steps %}
-                {% set is_locked = step.order > progress.unlocked_step %}
-                <a
-                    href="{% if not is_locked %}{{ url_for('lesson_page', lesson_slug=lesson_slug, step=step.order) }}{% else %}#{% endif %}"
-                    class="lesson-card__step{% if step.order == current_step.order %} lesson-card__step--active{% endif %}{% if is_locked %} lesson-card__step--locked{% endif %}"
-                >
-                    {% if step.type == "theory" %}
-                        Теория
-                    {% elif step.type == "test" %}
-                        Тест
-                    {% elif step.type == "practice" %}
-                        Практика
-                    {% endif %}
-
-                </a>
-            {% endfor %}
-        </div>
-
-        <div class="lesson-card__content">
-            {% if current_step.type == "theory" %}
-                <h2>{{ current_step.title }}</h2>
-                <p>{{ current_step.content }}</p>
-
+</div>  
                 <form method="post" action="{{ url_for('complete_step', lesson_slug=lesson_slug, step_order=current_step.order) }}">
                     <label>{{ current_step.question }}</label>
                     <input type="text" name="answer">
                     <button type="submit">Проверить</button>
                 </form>
-
             {% elif current_step.type == "test" %}
                 <h2>{{ current_step.title }}</h2>
                 <p>{{ current_step.task }}</p>

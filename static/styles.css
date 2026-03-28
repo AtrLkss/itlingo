@@ -156,11 +156,22 @@
 .col-4{
   height: 400px;
   overflow-y: auto;
-  position: relative;
+  position: fixed;
   padding-block: 110px ;
+  width: 400px;
 }
 .col-8{
+    margin-left: 500px;
+    width: 700px;
+    margin-top: 30px;
+}
+.col-9{
+    border: 6px solid #2563EB;
     height: 400px;
-    overflow-y: auto;
+    width: 1320px;
+    overflow-y: auto;   
     position: relative;
+    border-radius: 18px;
+    margin-left: -13px;
+    margin-bottom: 10px;
 }
