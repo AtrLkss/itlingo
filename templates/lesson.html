@@ -84,11 +84,18 @@
                         action="{{ url_for('complete_step', lesson_slug=lesson_slug, step_order=current_step.order) }}"
                         class="lesson-test__form"
                     >
-                        {% for option in current_step.options %}
-                            <label class="lesson-test__option">
-                                <input type="radio" name="answer" value="{{ option }}">
-                                <span class="font">{{ option }}</span>
-                            </label>
+                        {% for question in current_step.questions %}
+                            <div class="lesson-test__question">
+                                <h3 class="lesson-test__question-title font">{{ loop.index }}. {{ question.prompt }}</h3>
+                                <div class="lesson-test__options">
+                                    {% for option in question.options %}
+                                        <label class="lesson-test__option">
+                                            <input type="radio" name="{{ question.id }}" value="{{ option.value }}">
+                                            <span class="font">{{ option.label }}</span>
+                                        </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
                         {% endfor %}
                         <button type="submit" class="lesson-card__action-button">
                             Ответить и перейти дальше

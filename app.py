@@ -173,128 +173,200 @@ class UserAchievement(db.Model):
 
 LESSONS = {
     "lesson-1": {
-        "title": "Lesson 1",
-        "description": "Description for Lesson 1",
-        "reward_exp": 1000,
+        "title": "Урок 1. Знакомство с Python",
+        "description": "Первые шаги в Python: что это за язык, как он выглядит и где применяется.",
         "steps": [
             {
                 "order": 1,
                 "type": "theory",
                 "title": "Вступление",
                 "turtle-1": "Что такое Python?",
-                "turtle-2": "Почему пайтон идеален для начинающих?",
+                "turtle-2": "Почему Python удобен для новичков?",
                 "turtle-3": "Первая программа",
-                "turtle-4": "",
-                "content-1": """"Представьте себе язык, на котором вы можете разговаривать с компьютером так же естественно, как с другом. Язык, который понимает ваши мысли и помогает воплощать идеи в жизнь без лишних преград. Это — Python.
-
-                Python — это язык программирования, который появился в 1991 году благодаря голландскому разработчику Гвидо ван Россуму. Название было вдохновлено не змеей, как многие думают, а британским комедийным шоу «Летающий цирк Монти Пайтона». Создатель хотел, чтобы язык был таким же веселым, простым и доступным.
-
-                Сегодня Python — один из самых популярных языков программирования в мире. Его любят за простоту, читаемость и мощь. На Python пишут всё: от простых скриптов до сложных систем искусственного интеллекта, веб-сайтов и научных исследований.""",
-                "content-2": """Почему Python идеален для начинающих? Представьте, что вы учитесь кататься на велосипеде. Можно начать со сложного гоночного велосипеда с десятком передач, а можно с простого, устойчивого и надежного. Python — это тот самый надежный велосипед.
-
-                Вот что делает Python особенным. Во-первых, читаемость. Код на Python похож на английский язык. Вместо запутанных скобок и сложных конструкций — понятные слова и логичные структуры. Во-вторых, простота. Чтобы написать первую программу, достаточно одной строчки. Вам не нужно изучать сотни правил перед тем, как увидеть результат. В-третьих, сообщество. Миллионы разработчиков по всему миру используют Python. Любой ваш вопрос уже задавали до вас, и ответ на него легко найти. И наконец, универсальность. Выучив Python, вы сможете работать в разных направлениях: веб-разработка, анализ данных, искусственный интеллект, автоматизация, создание игр и многое другое.
-                """,
-                "content-3": """В программировании есть традиция: первая программа на новом языке должна выводить фразу «Hello, World!». Это как первый шаг в большом путешествии.
-
-                Python позволяет сделать это одной строчкой:
-
-                print("Hello, World!")
-
-                Разберем, что здесь происходит. print — это команда (функция), которая говорит компьютеру: «Выведи на экран то, что я укажу». В скобках помещается то, что мы хотим вывести. А кавычки показывают, что внутри находится текст — в программировании это называется «строка».
-                """,
-                "content-4": "",
-                "question": "Python - Это змея или Язык программирования?",
-                "answer": "Да",
+                "turtle-4": "Где используют Python?",
+                "content-1": """Python — это язык программирования, который помогает человеку общаться с компьютером с помощью понятных команд. Он был создан так, чтобы код было легко читать и писать. Благодаря этому Python часто выбирают как первый язык для изучения.""",
+                "content-2": """Python удобен для новичков, потому что в нем меньше сложных конструкций, чем во многих других языках. Код выглядит аккуратно и напоминает обычный текст с командами. Это помогает сосредоточиться на логике задач, а не на запоминании большого количества правил.""",
+                "content-3": """Традиционная первая программа на новом языке выводит фразу Hello, World!. В Python для этого используют функцию print. Например, команда print("Hello, World!") покажет эту строку на экране.""",
+                "content-4": """Python применяют в веб-разработке, анализе данных, автоматизации, создании ботов и работе с искусственным интеллектом. Это универсальный язык, который подходит и для учебы, и для серьезных проектов. Поэтому изучение Python дает хорошую основу для роста в IT.""",
+                "exp_reward": 50,
             },
             {
                 "order": 2,
                 "type": "test",
-                "title": "Тест",
-                "task": "Какая функция позволяет вывести текст на экран в Python?",
-                "options": ["print", "write", "pen"],
-                "correct": "print",
+                "title": "Проверка по теме",
+                "questions": [
+                    {
+                        "id": "q1",
+                        "prompt": "Что такое Python?",
+                        "options": [
+                            {"value": "programming_language", "label": "Язык программирования"},
+                            {"value": "graphic_editor", "label": "Графический редактор"},
+                            {"value": "search_engine", "label": "Поисковая система"},
+                        ],
+                        "correct": "programming_language",
+                    },
+                    {
+                        "id": "q2",
+                        "prompt": "Какая команда выводит текст на экран?",
+                        "options": [
+                            {"value": "print", "label": "print"},
+                            {"value": "input", "label": "input"},
+                            {"value": "range", "label": "range"},
+                        ],
+                        "correct": "print",
+                    },
+                    {
+                        "id": "q3",
+                        "prompt": "Почему Python подходит новичкам?",
+                        "options": [
+                            {"value": "clear_syntax", "label": "У него понятный синтаксис"},
+                            {"value": "no_variables", "label": "В нем нет переменных"},
+                            {"value": "only_games", "label": "Он работает только в играх"},
+                        ],
+                        "correct": "clear_syntax",
+                    },
+                ],
+                "exp_reward": 300,
             },
             {
                 "order": 3,
                 "type": "practice",
                 "title": "Практическое задание",
-                "task": "Напиши 'Hello, World!' на Python",
-                "hint": "Используй print()",
+                "task": "Напиши программу, которая выводит на экран строку Hello, World! с помощью функции print().",
+                "hint": "Используй print(\"Hello, World!\")",
+                "exp_reward": 250,
             },
         ],
     },
     "lesson-2": {
-        "title": "Lesson 2",
-        "description": "Description for Lesson 2",
-        "reward_exp": 1000,
+        "title": "Урок 2. Переменные и операторы",
+        "description": "Разбираем, как хранить данные в переменных и выполнять вычисления.",
         "steps": [
             {
                 "order": 1,
                 "type": "theory",
                 "title": "Переменные и операторы",
-                "turtle-1": "В РАЗРАБОТКЕ",
-                "turtle-2": "",
-                "turtle-3": "",
-                "turtle-4": "",
-                "content-1": "...",
-                "content-2": "...",
-                "content-3": "...",
-                "content-4": "...",
-                "question": "Python - Это змея или Язык программирования?",
-                "answer": "Да",
+                "turtle-1": "Что такое переменная?",
+                "turtle-2": "Как присваивать значения?",
+                "turtle-3": "Основные операторы",
+                "turtle-4": "Как использовать переменные в программе?",
+                "content-1": """Переменная — это именованное место в памяти, где хранится какое-то значение. Можно представить ее как коробку с наклейкой: на наклейке написано имя, а внутри лежит нужная информация. Например, в переменной age можно сохранить возраст пользователя.""",
+                "content-2": """Чтобы записать значение в переменную, используют знак равно. Например, name = "Alex" или count = 5. Слева пишут имя переменной, а справа — значение, которое должно в ней храниться.""",
+                "content-3": """Операторы помогают выполнять действия с числами и значениями. Например, + складывает, - вычитает, * умножает, а / делит. С их помощью программа может считать и менять данные.""",
+                "content-4": """Переменные удобно использовать вместе с print и вычислениями. Например, если a = 7 и b = 5, то команда print(a + b) выведет 12. Так программа работает не только с готовыми числами, но и с сохраненными значениями.""",
+                "exp_reward": 50,
             },
             {
                 "order": 2,
                 "type": "test",
-                "title": "В разработке",
-                "task": "...",
-                "options": ["В разработке"],
-                "correct": "В разработке",
+                "title": "Проверка по теме",
+                "questions": [
+                    {
+                        "id": "q1",
+                        "prompt": "Для чего нужна переменная?",
+                        "options": [
+                            {"value": "store_value", "label": "Чтобы хранить значение"},
+                            {"value": "delete_code", "label": "Чтобы удалить код"},
+                            {"value": "close_program", "label": "Чтобы закрыть программу"},
+                        ],
+                        "correct": "store_value",
+                    },
+                    {
+                        "id": "q2",
+                        "prompt": "Как записать число 10 в переменную count?",
+                        "options": [
+                            {"value": "assign", "label": "count = 10"},
+                            {"value": "reverse_assign", "label": "10 = count"},
+                            {"value": "compare", "label": "count == 10"},
+                        ],
+                        "correct": "assign",
+                    },
+                    {
+                        "id": "q3",
+                        "prompt": "Какой оператор означает умножение?",
+                        "options": [
+                            {"value": "multiply", "label": "*"},
+                            {"value": "plus", "label": "+"},
+                            {"value": "divide", "label": "/"},
+                        ],
+                        "correct": "multiply",
+                    },
+                ],
+                "exp_reward": 300,
             },
             {
                 "order": 3,
                 "type": "practice",
                 "title": "Практическое задание",
-                "task": "Напиши 'Hello, World!' на Python",
-                "hint": "Используй print()",
+                "task": "Создай две переменные a и b со значениями 7 и 5, а затем выведи их сумму на экран.",
+                "hint": "Напиши a = 7, b = 5, а потом print(a + b).",
+                "exp_reward": 250,
             },
         ],
     },
     "lesson-3": {
-        "title": "Lesson 3",
-        "description": "Description for Lesson 3",
-        "reward_exp": 1000,
+        "title": "Урок 3. Условия и циклы",
+        "description": "Учимся принимать решения в коде и повторять действия много раз.",
         "steps": [
             {
                 "order": 1,
                 "type": "theory",
                 "title": "Условия и циклы",
-                "turtle-1": "В РАЗРАБОТКЕ",
-                "turtle-2": "",
-                "turtle-3": "",
-                "turtle-4": "",
-                "content-1": "...",
-                "content-2": "...",
-                "content-3": "...",
-                "content-4": "...",
-                "question": "Python - Это змея или Язык программирования?",
-                "answer": "Да",
+                "turtle-1": "Что такое условие?",
+                "turtle-2": "Как работает if?",
+                "turtle-3": "Что такое цикл?",
+                "turtle-4": "Где это применяют?",
+                "content-1": """Условие помогает программе выбирать одно действие из нескольких. Например, если пароль введен правильно, программа пускает пользователя дальше. Если пароль неверный, она показывает сообщение об ошибке.""",
+                "content-2": """В Python для условий используют команду if. После if пишут проверку, а ниже — действие, которое выполнится, если условие истинно. Можно также использовать else, чтобы задать поведение на случай, если условие не выполнено.""",
+                "content-3": """Цикл нужен, когда требуется повторить действие несколько раз. Например, можно вывести числа от 1 до 5 без пяти отдельных команд print. В Python для этого часто используют цикл for.""",
+                "content-4": """Условия и циклы встречаются почти в каждой программе. Условия помогают реагировать на действия пользователя, а циклы полезны при обработке списков, повторов и автоматизации однотипных задач. Это важные инструменты любого программиста.""",
+                "exp_reward": 50,
             },
             {
                 "order": 2,
                 "type": "test",
-                "title": "PROVERKA PO TEORII",
-                "task": "Kakoi yazik mi izuchaem?",
-                "options": ["C++", "Python", "Java"],
-                "correct": "Python",
-            
+                "title": "Проверка по теме",
+                "questions": [
+                    {
+                        "id": "q1",
+                        "prompt": "Какое слово используют для условия в Python?",
+                        "options": [
+                            {"value": "if", "label": "if"},
+                            {"value": "for", "label": "for"},
+                            {"value": "print", "label": "print"},
+                        ],
+                        "correct": "if",
+                    },
+                    {
+                        "id": "q2",
+                        "prompt": "Что делает цикл?",
+                        "options": [
+                            {"value": "repeat_actions", "label": "Повторяет действие несколько раз"},
+                            {"value": "delete_variables", "label": "Удаляет переменные"},
+                            {"value": "open_browser", "label": "Открывает браузер"},
+                        ],
+                        "correct": "repeat_actions",
+                    },
+                    {
+                        "id": "q3",
+                        "prompt": "Какое слово задает альтернативное действие?",
+                        "options": [
+                            {"value": "else", "label": "else"},
+                            {"value": "input", "label": "input"},
+                            {"value": "def", "label": "def"},
+                        ],
+                        "correct": "else",
+                    },
+                ],
+                "exp_reward": 300,
             },
             {
                 "order": 3,
                 "type": "practice",
                 "title": "Практическое задание",
-                "task": "Напиши 'Hello, World!' на Python",
-                "hint": "Используй print()",
+                "task": "Напиши цикл for, который выводит числа от 1 до 5, каждое с новой строки.",
+                "hint": "Используй for i in range(1, 6): и внутри print(i).",
+                "exp_reward": 250,
             },
         ],
     },
@@ -398,7 +470,7 @@ def lesson_page(lesson_slug):
     progress = get_or_create_progress(current_user.id, lesson_slug)
     incorrect_answer = request.args.get("incorrect", 0, type=int) == 1
 
-    if not progress.test_passed and progress.unlocked_step > 2:
+    if not progress.test_passed and not progress.completed and progress.unlocked_step > 2:
         progress.unlocked_step = 2
         db.session.commit()
 
@@ -439,14 +511,15 @@ def complete_step(lesson_slug, step_order):
     if current_step["type"] == "theory":
         is_correct = answer != ""
     elif current_step["type"] == "test":
-        is_correct = answer == current_step["correct"]
+        questions = current_step.get("questions", [])
+        is_correct = all(
+            request.form.get(question["id"], "").strip() == question["correct"]
+            for question in questions
+        )
     elif current_step["type"] == "practice":
         is_correct = True
 
     if not is_correct and current_step["type"] == "test":
-        progress.test_passed = False
-        progress.unlocked_step = min(progress.unlocked_step, step_order)
-        db.session.commit()
         return redirect(
             url_for(
                 "lesson_page",
@@ -458,8 +531,12 @@ def complete_step(lesson_slug, step_order):
 
     if is_correct:
         if current_step["type"] == "theory":
+            if progress.unlocked_step < 2:
+                add_exp(current_user, current_step.get("exp_reward", 50))
             progress.unlocked_step = max(progress.unlocked_step, 2)
         elif current_step["type"] == "test":
+            if progress.unlocked_step < 3:
+                add_exp(current_user, current_step.get("exp_reward", 100))
             progress.test_passed = True
             progress.unlocked_step = max(progress.unlocked_step, 3)
 
@@ -472,10 +549,10 @@ def complete_step(lesson_slug, step_order):
         elif step_order < len(lesson["steps"]):
             progress.unlocked_step = max(progress.unlocked_step, step_order + 1)
         else:
+            if not progress.completed:
+                add_exp(current_user, current_step.get("exp_reward", 250))
             progress.completed = True
-            if not progress.reward_claimed:
-                add_exp(current_user, lesson["reward_exp"])
-                progress.reward_claimed = True
+            progress.reward_claimed = True
 
         db.session.commit()
 

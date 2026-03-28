@@ -111,6 +111,19 @@
     gap: 12px;
     max-width: 720px;
 }
+.lesson-test__question {
+    padding: 16px;
+    border: 1px solid #DBEAFE;
+    border-radius: 14px;
+    background-color: #F8FAFC;
+}
+.lesson-test__question-title {
+    margin-bottom: 14px !important;
+}
+.lesson-test__options {
+    display: grid;
+    gap: 10px;
+}
 .lesson-card__action {
     margin-top: 24px;
 }
@@ -179,6 +192,9 @@
     border: 1px solid #bfdbfe;
     border-radius: 12px;
     background-color: #eff6ff !important;
+}
+.lesson-test__option input {
+    margin: 0;
 }
 .lesson-error {
     color: #dc2626;
